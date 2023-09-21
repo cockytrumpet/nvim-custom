@@ -17,16 +17,6 @@ for _, lsp in ipairs(servers) do
   }
 end
 
--- lspconfig.lua_ls.setup {
---   settings = {
---     Lua = {
---       workspace = {
---         checkThirdParty = false,
---       },
---     },
---   },
--- }
-
 lspconfig.clangd.setup {
   on_attach = on_attach,
   capabilities = capabilities,

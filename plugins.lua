@@ -580,11 +580,11 @@ local plugins = {
       "hrsh7th/cmp-nvim-lsp-signature-help",
       "onsails/lspkind-nvim",
       "hrsh7th/cmp-copilot",
-      {
+      --[[ {
         "zbirenbaum/copilot-cmp",
         event = { "InsertEnter", "LspAttach" },
         fix_pairs = true,
-      },
+      }, ]]
       "ray-x/cmp-treesitter",
       "nvim-treesitter/nvim-treesitter-textobjects",
       "chrisgrieser/nvim-various-textobjs",
@@ -599,16 +599,11 @@ local plugins = {
       "js-everts/cmp-tailwind-colors",
       {
         "jcdickinson/codeium.nvim",
-        commit = "2afb9ed9974ceaaec44b38b522bbf072c22d2aaa",
         event = { "InsertEnter", "LspAttach" },
         config = function()
           require("codeium").setup()
         end,
       },
-      -- {
-      --   "Exafunction/codeium.vim",
-      --   event = "BufEnter",
-      -- },
       {
         "L3MON4D3/LuaSnip",
         config = function(_, opts)
@@ -678,6 +673,7 @@ local plugins = {
       require("cmp").setup(opts)
     end,
   },
+  -- "onsails/lspkind-nvim",
 }
 
 return plugins

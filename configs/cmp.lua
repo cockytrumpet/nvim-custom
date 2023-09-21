@@ -1,3 +1,14 @@
+--[[ local ok, lspkind = pcall(require, "lspkind")
+if not ok then
+  return
+end
+
+lspkind.init {
+  symbol_map = {
+    Copilot = "",
+  },
+} ]]
+
 local M = {}
 local copilot_status_ok, copilot_cmp_comparators = pcall(require, "copilot_cmp.comparators")
 local list_contains = vim.list_contains or vim.tbl_contains
