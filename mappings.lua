@@ -61,6 +61,62 @@ M.general = {
   },
 }
 
+M.terminal = {
+  n = {
+    ["<leader>h"] = {
+      function()
+        require("nvchad.term").new { pos = "sp", size = 0.3 }
+      end,
+      "New horizontal term",
+    },
+
+    ["<leader>v"] = {
+      function()
+        require("nvchad.term").new { pos = "vsp", size = 0.3 }
+      end,
+      "New vertical term",
+    },
+
+    ["<A-v>"] = {
+      function()
+        require("nvchad.term").toggle { pos = "vsp", id = "vtoggleTerm", size = 0.3 }
+      end,
+      "New vertical term",
+    },
+
+    ["<A-h>"] = {
+      function()
+        require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm", size = 0.3 }
+      end,
+      "New vertical term",
+    },
+  },
+
+  t = {
+    ["<ESC>"] = {
+      function()
+        local win = vim.api.nvim_get_current_win()
+        vim.api.nvim_win_close(win, true)
+      end,
+      "close term in terminal mode",
+    },
+
+    ["<A-v>"] = {
+      function()
+        require("nvchad.term").toggle { pos = "vsp", id = "vtoggleTerm" }
+      end,
+      "New vertical term",
+    },
+
+    ["<A-h>"] = {
+      function()
+        require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm", size = 0.3 }
+      end,
+      "New vertical term",
+    },
+  },
+}
+
 M.test = {
   n = {
     ["<leader>nt"] = {

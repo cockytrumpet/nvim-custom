@@ -6,16 +6,16 @@ local highlights = require "custom.highlights"
 
 M.ui = {
   statusline = {
-    theme = "vscode_colored", -- default/vscode/vscode_colored/minimal
+    theme = "default", -- default/vscode/vscode_colored/minimal
 
     -- default/round/block/arrow (separators work only for "default" statusline theme;
     -- round and block will work for the minimal theme only)
-    separator_style = "round",
+    separator_style = "block",
     overriden_modules = nil,
   },
 
   theme = "catppuccin",
-  theme_toggle = { "tokyonight", "catppuccin" },
+  theme_toggle = { "onenord", "catppuccin" },
   lsp_semantic_tokens = false,
   hl_override = highlights.override,
   hl_add = highlights.add,
@@ -23,7 +23,7 @@ M.ui = {
   cmp = {
     icons = true,
     lspkind_text = true,
-    style = "flat_dark", -- default/flat_light/flat_dark/atom/atom_colored
+    style = "default", -- default/flat_light/flat_dark/atom/atom_colored
   },
 
   lsp = {
