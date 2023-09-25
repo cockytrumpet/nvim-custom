@@ -6,14 +6,14 @@ local options = {
   ignorecase = true, -- ignore case in search patterns
   mouse = "a", -- allow the mouse to be used in neovim
   -- pumheight = 8, -- pop up menu height
-  pumblend = 10, -- transparency of pop-up menu
+  pumblend = 30, -- transparency of pop-up menu
   -- showmode = false, -- we don't need to see things like -- INSERT -- anymore
   smartcase = true, -- smart case
   smartindent = true, -- make indenting smarter again
   splitbelow = true, -- force all horizontal splits to go below current window
   splitright = true, -- force all vertical splits to go to the right of current window
   swapfile = false, -- creates a swapfile
-  timeoutlen = 500, -- time to wait for a mapped sequence to complete (in milliseconds)
+  -- timeoutlen = 500, -- time to wait for a mapped sequence to complete (in milliseconds)
   undofile = true, -- enable persistent undo
   undodir = os.getenv "HOME" .. "/.undodir", -- set an undo directory
   updatetime = 50, -- faster completion (4000ms default)
@@ -31,19 +31,15 @@ local options = {
   sidescrolloff = 8, -- minimal number of screen columns
   lazyredraw = false, -- Won't be redrawn while executing macros, register and other commands.
   termguicolors = true, -- Enables 24-bit RGB color in the TUI
-  -- foldenable = false,
-  -- foldlevel = 99,
-  -- foldlevelstart = 99,
-  -- foldmethod = "indent",
-  -- fillchars = { eob = " ", fold = " ", foldopen = "", foldsep = " ", foldclose = "", lastline = " " }, -- make EndOfBuffer invisible
-  -- foldcolumn = "1",
+  foldmethod = "expr",
+  foldexpr = "nvim_treesitter#foldexpr()",
+  foldenable = false,
+  foldlevel = 99,
+  foldlevelstart = 99,
+  fillchars = { eob = " ", fold = " ", foldopen = "", foldsep = " ", foldclose = "", lastline = " " }, -- make EndOfBuffer invisible
+  foldcolumn = "0",
   ruler = false,
-  -- shell = vim.fn.executable "pwsh" and "pwsh" or "powershell",
-  -- shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
-  -- shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
-  -- shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
-  -- shellquote = "",
-  -- shellxquote = "",
+  textwidth = 80,
 }
 
 local global = {

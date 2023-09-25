@@ -28,8 +28,8 @@ M.general = {
     ["<C-l>"] = { "<cmd> TmuxNavigateRight<CR>", "window right" },
     ["<C-j>"] = { "<cmd> TmuxNavigateDown<CR>", "window down" },
     ["<C-k>"] = { "<cmd> TmuxNavigateUp<CR>", "window up" },
-    ['<leader>T'] = {"<cmd> TestOnSave<CR>", "pytest" },
-    ['<leader>K'] = { "<cmd> TestLineDiag <CR>", "pytest line diagnostics" },
+    ["<leader>T"] = { "<cmd> TestOnSave<CR>", "pytest" },
+    ["<leader>K"] = { "<cmd> TestLineDiag <CR>", "pytest line diagnostics" },
     ["<leader>rf"] = {
       function()
         run_code()
@@ -296,4 +296,44 @@ M.harpoon = {
     },
   },
 }
+
+M.ufo = {
+  plugin = true,
+  n = {
+    ["zR"] = {
+      function()
+        require("ufo").openAllFolds()
+      end,
+      "Open all folds",
+    },
+    ["zM"] = {
+      function()
+        require("ufo").closeAllFolds()
+      end,
+      "Close all folds",
+    },
+    ["zr"] = {
+      function()
+        require("ufo").openFoldsExceptKinds()
+      end,
+      "Open all folds except kinds",
+    },
+    ["zm"] = {
+      function()
+        require("ufo").closeFoldsWith()
+      end,
+      "Close all folds with",
+    },
+    ["K"] = {
+      function()
+        local winid = require("ufo").peekFoldedLinesUnderCursor()
+        if not winid then
+          vim.lsp.buf.hover()
+        end
+      end,
+      "Peek definition",
+    },
+  },
+}
+
 return M
