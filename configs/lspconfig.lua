@@ -1,6 +1,6 @@
---[[ require("neodev").setup({
+require("neodev").setup({
   -- add any options here, or leave empty to use the default settings
-}) ]]
+})
 
 local on_attach = require("plugins.configs.lspconfig").on_attach
 local capabilities = require("plugins.configs.lspconfig").capabilities
@@ -25,7 +25,27 @@ lspconfig.clangd.setup {
     "--offset-encoding=utf-16",
   },
 }
-
+--[[
+lspconfig.pylsp.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "python" },
+  settings = {
+    pylsp = {
+      plugins = {
+        pycodestyle = {
+          ignore = {'E226,E302,E41,W391,W503'},
+          maxLineLength = 100
+        },
+        flake8 = {
+          ignore = {'E226,E302,E41,W391,W503'},
+          maxLineLength = 100
+        }
+      }
+    }
+  }
+}
+]]
 lspconfig.pyright.setup {
   on_attach = on_attach,
   capabilities = capabilities,
@@ -39,8 +59,12 @@ lspconfig.pyright.setup {
         useLibraryCodeForTypes = true,
         diagnosticMode = "workspace",
       },
+      pyright = {
+        autoImportCompletion = true,
+      },
     },
   },
+  -- single_file = true,
 }
 
 -- Metals setup

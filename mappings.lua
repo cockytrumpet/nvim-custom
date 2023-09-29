@@ -14,7 +14,7 @@ M.general = {
       " Clear highlights",
       opts = { silent = true },
     },
-    ["<leader>s"] = {
+    ["<leader>sp"] = {
       function()
         require("treesj").toggle()
       end,
@@ -61,56 +61,67 @@ M.general = {
   },
 }
 
-M.terminal = {
+M.nvterm = {
+  plugin = true,
+
+  t = {
+    -- toggle in terminal mode
+    ["<A-i>"] = {
+      function()
+        require("nvterm.terminal").toggle "float"
+      end,
+      "Toggle floating term",
+    },
+
+    ["<A-j>"] = {
+      function()
+        require("nvterm.terminal").toggle "horizontal"
+      end,
+      "Toggle horizontal term",
+    },
+
+    ["<A-l>"] = {
+      function()
+        require("nvterm.terminal").toggle "vertical"
+      end,
+      "Toggle vertical term",
+    },
+  },
+
   n = {
+    -- toggle in normal mode
+    ["<A-i>"] = {
+      function()
+        require("nvterm.terminal").toggle "float"
+      end,
+      "Toggle floating term",
+    },
+
+    ["<A-j>"] = {
+      function()
+        require("nvterm.terminal").toggle "horizontal"
+      end,
+      "Toggle horizontal term",
+    },
+
+    ["<A-l>"] = {
+      function()
+        require("nvterm.terminal").toggle "vertical"
+      end,
+      "Toggle vertical term",
+    },
+
+    -- new
     ["<leader>h"] = {
       function()
-        require("nvchad.term").new { pos = "sp", size = 0.3 }
+        require("nvterm.terminal").new "horizontal"
       end,
       "New horizontal term",
     },
 
     ["<leader>v"] = {
       function()
-        require("nvchad.term").new { pos = "vsp", size = 0.3 }
-      end,
-      "New vertical term",
-    },
-
-    ["<A-v>"] = {
-      function()
-        require("nvchad.term").toggle { pos = "vsp", id = "vtoggleTerm", size = 0.3 }
-      end,
-      "New vertical term",
-    },
-
-    ["<A-h>"] = {
-      function()
-        require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm", size = 0.3 }
-      end,
-      "New vertical term",
-    },
-  },
-
-  t = {
-    ["<ESC>"] = {
-      function()
-        local win = vim.api.nvim_get_current_win()
-        vim.api.nvim_win_close(win, true)
-      end,
-      "close term in terminal mode",
-    },
-
-    ["<A-v>"] = {
-      function()
-        require("nvchad.term").toggle { pos = "vsp", id = "vtoggleTerm" }
-      end,
-      "New vertical term",
-    },
-
-    ["<A-h>"] = {
-      function()
-        require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm", size = 0.3 }
+        require("nvterm.terminal").new "vertical"
       end,
       "New vertical term",
     },
@@ -294,6 +305,13 @@ M.harpoon = {
       end,
       "󱪿 Navigate to file 4",
     },
+  },
+}
+
+M.persisted = {
+  n = {
+    ["<leader>ss"] = { "<CMD>Telescope persisted<CR>", "󰆓 List session" },
+    ["<leader>sd"] = { "<CMD>SessionDelete<CR>", "󱙃 Delete Session" },
   },
 }
 

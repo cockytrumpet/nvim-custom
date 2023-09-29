@@ -82,7 +82,7 @@ function _G.run_code()
       default = "perl %",
     },
     scala = {
-      default = "scala-cli %",
+      default = "scala %",
     },
   }
 

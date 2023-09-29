@@ -161,12 +161,15 @@ M.telescope = {
     "themes",
     "terms",
     "notify",
-    -- "frecency",
+    "frecency",
     "undo",
     "vim_bookmarks",
     "ast_grep",
     "ctags_plus",
     "luasnip",
+    "lazygit",
+    "fzf",
+    "file_browser"
   },
   extensions = {
     fzf = {
@@ -195,6 +198,21 @@ M.telescope = {
         open_lazy_root_find_files = "<C-r>f",
         open_lazy_root_live_grep = "<C-r>g",
       },
+    },
+  file_browser = {
+      hijack_netrw = true,
+      --[[ hidden = true,
+      follow = true,
+      width = 0.25,
+      height = 0.5,
+      disable_devicons = false,
+      icons = {
+        up = "",
+        down = "",
+        parent = "",
+        folder = "",
+        folder_open = "",
+      }, ]]
     },
   },
 }
