@@ -10,14 +10,20 @@ local sources = {
 
   -- Lua
   b.formatting.stylua,
+  b.diagnostics.luacheck,
 
   -- cpp
   b.formatting.clang_format,
+  b.diagnostics.cppcheck,
 
   -- python
   b.formatting.black,
   b.formatting.isort,
-  b.diagnostics.ruff,
+  b.code_actions.refactoring,
+  -- b.diagnostics.ruff,
+
+  -- scala
+  b.formatting.scalafmt,
 }
 
 null_ls.setup {

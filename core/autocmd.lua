@@ -5,6 +5,28 @@ local settings = require("custom.chadrc").settings
 -- General Settings
 local general = augroup("General Settings", { clear = true })
 
+-- Don't let some things get persisted
+local group = vim.api.nvim_create_augroup("PersistedHooks", {})
+
+vim.api.nvim_create_autocmd({ "User" }, {
+  pattern = "PersistedSavePre",
+  group = group,
+  callback = function()
+    pcall(vim.cmd, "bw minimap")
+    pcall(vim.cmd, "bw NvimTree")
+    pcall(vim.cmd, "bw Trouble")
+    pcall(vim.cmd, "bw OUTLINE")
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "User" }, {
+  pattern = "PersistedLoadPost",
+  group = group,
+  callback = function()
+    local api = require "nvim-tree.api"
+    api.tree.toggle { find_file = true, focus = false }
+  end,
+})
 -- Auto resize panes when resizing nvim window
 autocmd("VimResized", {
   pattern = "*",
@@ -45,19 +67,19 @@ autocmd("VimResized", {
 -- })
 
 -- Open new buffer if only Nvimtree is open
--- autocmd("BufEnter", {
---   nested = true,
---   callback = function()
---     local api = require "nvim-tree.api"
---     if #vim.api.nvim_list_wins() == 1 and api.tree.is_tree_buf() then
---       vim.defer_fn(function()
---         api.tree.toggle { find_file = true, focus = true }
---         api.tree.toggle { find_file = true, focus = true }
---         vim.cmd "wincmd p"
---       end, 0)
---     end
---   end,
--- })
+autocmd("BufEnter", {
+  nested = true,
+  callback = function()
+    local api = require "nvim-tree.api"
+    if #vim.api.nvim_list_wins() == 1 and api.tree.is_tree_buf() then
+      vim.defer_fn(function()
+        api.tree.toggle { find_file = true, focus = true }
+        api.tree.toggle { find_file = true, focus = true }
+        vim.cmd "wincmd p"
+      end, 0)
+    end
+  end,
+})
 
 -- Close nvim if NvimTree is only running buffer
 autocmd("BufEnter", {
@@ -163,7 +185,7 @@ autocmd({ "BufEnter", "BufNew" }, {
       "dapui_stacks",
       "dapui_breakpoints",
       "dapui_scopes",
-      "themes"
+      "themes",
     }
 
     if vim.tbl_contains(ft_ignore, vim.bo.filetype) then
@@ -184,7 +206,7 @@ autocmd("FileType", {
 
 -- Highlight on yank
 autocmd("TextYankPost", {
-  command = "silent! lua vim.highlight.on_yank({higroup='YankVisual', timeout=200})",
+  command = "silent! lua vim.highlight.on_yank({higroup='YankVisual', timeout=500})",
   group = augroup("YankHighlight", { clear = true }),
 })
 
@@ -247,7 +269,7 @@ autocmd("FileType", {
     "neotest-output",
     "neotest-summary",
     "neotest-output-panel",
-    "fugitive"
+    "fugitive",
   },
   command = [[
             nnoremap <buffer><silent> q :close<CR>
@@ -373,124 +395,124 @@ autocmd("BufWritePost", {
 ------------------ pytest TestOnSave ------------------
 
 local cmd = {
-	"pytest",
-	"--json-report",
-	"--json-report-file=/dev/stderr",
-	"-q",
-	"--no-header",
-	"--no-summary",
+  "pytest",
+  "--json-report",
+  "--json-report-file=/dev/stderr",
+  "-q",
+  "--no-header",
+  "--no-summary",
 }
 
 local attach_to_buffer = function(bufnr, command)
-	local group = vim.api.nvim_create_augroup("TestOnSave", { clear = true })
-	local ns = vim.api.nvim_create_namespace("TestOnSave")
+  local group = vim.api.nvim_create_augroup("TestOnSave", { clear = true })
+  local ns = vim.api.nvim_create_namespace "TestOnSave"
 
-	local state = {
-		bufnr = bufnr,
-		tests = {},
-		summary = {},
-	}
+  local state = {
+    bufnr = bufnr,
+    tests = {},
+    summary = {},
+  }
 
-	local add_test = function(entry)
-		local message = ""
-		if entry.call.longrepr then
-			message = entry.call.longrepr
-		end
+  local add_test = function(entry)
+    local message = ""
+    if entry.call.longrepr then
+      message = entry.call.longrepr
+    end
 
-		state.tests[entry.nodeid] = {
-			outcome = entry.outcome,
-			nodeid = entry.nodeid,
-			test = entry.keywords[1],
-			file = entry.keywords[2],
-			line_number = entry.lineno,
-			message = message,
-		}
-	end
+    state.tests[entry.nodeid] = {
+      outcome = entry.outcome,
+      nodeid = entry.nodeid,
+      test = entry.keywords[1],
+      file = entry.keywords[2],
+      line_number = entry.lineno,
+      message = message,
+    }
+  end
 
-	vim.api.nvim_create_user_command("TestLineDiag", function()
-		local line = vim.fn.line(".") - 1
-		for _, test in pairs(state.tests) do
-			if test.line_number == line then
-				vim.notify(test.message, "error", {
-					title = test.nodeid,
-					on_open = function(win)
-						local buf = vim.api.nvim_win_get_buf(win)
-						vim.api.nvim_buf_set_option(buf, "filetype", "python")
-					end,
-				})
-			end
-		end
-	end, {})
+  vim.api.nvim_create_user_command("TestLineDiag", function()
+    local line = vim.fn.line "." - 1
+    for _, test in pairs(state.tests) do
+      if test.line_number == line then
+        vim.notify(test.message, "error", {
+          title = test.nodeid,
+          on_open = function(win)
+            local buf = vim.api.nvim_win_get_buf(win)
+            vim.api.nvim_buf_set_option(buf, "filetype", "python")
+          end,
+        })
+      end
+    end
+  end, {})
 
-	vim.api.nvim_create_autocmd("BufWritePost", {
-		group = group,
-		pattern = "*.py",
-		callback = function()
-			vim.fn.jobstart(command, {
-				stdout_buffered = true,
-				stderr_buffered = true,
-				on_stderr = function(_, data)
-					if not data then
-						return
-					end
+  vim.api.nvim_create_autocmd("BufWritePost", {
+    group = group,
+    pattern = "*.py",
+    callback = function()
+      vim.fn.jobstart(command, {
+        stdout_buffered = true,
+        stderr_buffered = true,
+        on_stderr = function(_, data)
+          if not data then
+            return
+          end
 
-					local decoded = vim.fn.json_decode(data)
-					if not decoded then
-						return
-					else
-						state.summary = decoded.summary
-					end
+          local decoded = vim.fn.json_decode(data)
+          if not decoded then
+            return
+          else
+            state.summary = decoded.summary
+          end
 
-					local tests = decoded.tests
-					if not tests then
-						return
-					end
+          local tests = decoded.tests
+          if not tests then
+            return
+          end
 
-					vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
+          vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
 
-					for _, line in pairs(tests) do
-						add_test(line)
-						if state.tests[line.nodeid].outcome == "passed" then
-							local text = { "✓","DiagnosticOK" }
-							vim.api.nvim_buf_set_extmark(bufnr, ns, state.tests[line.nodeid].line_number, 0, {
-								virt_text = { text },
-							})
-						end
-					end
-				end,
-				on_exit = function()
-					local failed = {}
-					for _, test in pairs(state.tests) do
-						if test.outcome == "failed" then
-							table.insert(failed, {
-								bufnr = bufnr,
-								lnum = test.line_number,
-								col = 0,
-								severity = vim.lsp.protocol.DiagnosticSeverity.Error,
-								source = "pytest",
-								message = "Test failed",
-								user_data = {},
-							})
-						end
-					end
-					vim.diagnostic.set(ns, bufnr, failed, {})
-					if state.summary.total == state.summary.passed then
+          for _, line in pairs(tests) do
+            add_test(line)
+            if state.tests[line.nodeid].outcome == "passed" then
+              local text = { "✓", "DiagnosticOK" }
+              vim.api.nvim_buf_set_extmark(bufnr, ns, state.tests[line.nodeid].line_number, 0, {
+                virt_text = { text },
+              })
+            end
+          end
+        end,
+        on_exit = function()
+          local failed = {}
+          for _, test in pairs(state.tests) do
+            if test.outcome == "failed" then
+              table.insert(failed, {
+                bufnr = bufnr,
+                lnum = test.line_number,
+                col = 0,
+                severity = vim.lsp.protocol.DiagnosticSeverity.Error,
+                source = "pytest",
+                message = "Test failed",
+                user_data = {},
+              })
+            end
+          end
+          vim.diagnostic.set(ns, bufnr, failed, {})
+          if state.summary.total == state.summary.passed then
             vim.notify("All tests passed", "info", {
               title = state.summary.total .. " tests completed",
             })
-					else
-						vim.notify("Passed: " .. state.summary.passed .. "\nFailed: " .. state.summary.failed, "warn", {
-							title = state.summary.total .. " tests completed",
-						})
-					end
-				end,
-			})
-		end,
-	})
+          else
+            vim.notify("Passed: " .. state.summary.passed .. "\nFailed: " .. state.summary.failed, "warn", {
+              title = state.summary.total .. " tests completed",
+            })
+          end
+        end,
+      })
+    end,
+  })
 end
 
 vim.api.nvim_create_user_command("TestOnSave", function()
-	attach_to_buffer(vim.api.nvim_get_current_buf(), cmd)
+  attach_to_buffer(vim.api.nvim_get_current_buf(), cmd)
 end, {})
 --------------------------- end ---------------------------
 

@@ -23,17 +23,16 @@ local plugins = {
     dependencies = {
       -- format & linting
       {
-        "jose-elias-alvarez/null-ls.nvim",
+        "nvimtools/none-ls.nvim",
         config = function()
-          require "custom.configs.null-ls"
+          require "custom.configs.none-ls"
         end,
       },
-      -- { "folke/neodev.nvim", opts = {} },
     },
     config = function()
       require "plugins.configs.lspconfig"
       require "custom.configs.lspconfig"
-    end, -- Override to setup mason-lspconfig
+    end,
   },
 
   -- override plugin configs
@@ -51,7 +50,11 @@ local plugins = {
     opts = overrides.nvimtree,
   },
 
-  -- Install a plugin
+  -- Install plugins
+  {
+    "folke/neodev.nvim",
+    opts = {},
+  },
   {
     "max397574/better-escape.nvim",
     event = "InsertEnter",
@@ -102,7 +105,8 @@ local plugins = {
       "ibhagwan/fzf-lua", -- optional
     },
     config = true,
-    event = "VeryLazy",
+    -- event = "VeryLazy",
+    cmd = { "Neogit" },
     setup = function()
       require("neogit").setup {}
     end,
@@ -175,30 +179,31 @@ local plugins = {
     },
   },
   {
-    "rmagatti/auto-session",
+    "olimorris/persisted.nvim",
     event = "VimEnter",
-    config = function()
-      require("auto-session").setup {
-        log_level = "error",
-        auto_session_root_dir = vim.fn.stdpath "data" .. "/sessions/",
-        auto_session_last_session_dir = vim.fn.stdpath "data" .. "/sessions/last_session",
-        auto_session_suppress_dirs = { "~/", "~/Downloads", "/" },
-        auto_session_enabled = true,
-        auto_save_enabled = true,
-        auto_restore_enabled = true,
-        auto_session_enable_last_session = vim.loop.cwd() == vim.loop.os_homedir(),
-        session_lens = {
-          load_on_setup = true,
-          theme_conf = { border = true },
-          previewer = true,
-        },
-        post_restore_cmds = {
-          function()
-            require("nvim-tree.api").tree.toggle { focus = false, find_file = true }
-          end,
-        },
-      }
-    end,
+    opts = {
+      save_dir = vim.fn.expand(vim.fn.stdpath "data" .. "/sessions/"), -- directory where session files are saved
+      silent = true, -- silent nvim message when sourcing session file
+      use_git_branch = true, -- create session files based on the branch of the git enabled repository
+      autosave = true, -- automatically save session files when exiting Neovim
+      should_autosave = nil, -- function to determine if a session should be autosaved
+      autoload = true, -- automatically load the session for the cwd on Neovim startup
+      on_autoload_no_session = nil,
+      follow_cwd = true,
+      -- ignored_dirs = {
+      --   "~/.config",
+      --   "~/.local/nvim",
+      -- },
+      telescope = { -- options for the telescope extension
+        reset_prompt_after_deletion = true, -- whether to reset prompt after session deleted
+      },
+      config = function()
+        vim.o.sessionoptions = "buffers,curdir,folds,globals,tabpages,winpos,winsize"
+        require("persisted").setup(opts)
+        require("telescope").load_extension "persisted"
+        require("core.utils").load_mappings "persisted"
+      end,
+    },
   },
   {
     "hiphish/rainbow-delimiters.nvim",
@@ -279,16 +284,20 @@ local plugins = {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make",
       },
-      -- {
-      --   "nvim-telescope/telescope-frecency.nvim",
-      --   dependencies = { "kkharji/sqlite.lua" },
-      -- },
+      {
+        "nvim-telescope/telescope-frecency.nvim",
+        dependencies = { "kkharji/sqlite.lua" },
+      },
       {
         "nvim-telescope/telescope-ui-select.nvim",
         event = "VeryLazy",
         config = function()
           require("telescope").load_extension "ui-select"
         end,
+      },
+      {
+        "nvim-telescope/telescope-file-browser.nvim",
+        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
       },
     },
   },
