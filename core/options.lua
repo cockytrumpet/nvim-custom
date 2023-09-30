@@ -6,7 +6,7 @@ local options = {
   ignorecase = true, -- ignore case in search patterns
   mouse = "a", -- allow the mouse to be used in neovim
   -- pumheight = 8, -- pop up menu height
-  pumblend = 30, -- transparency of pop-up menu
+  pumblend = 20, -- transparency of pop-up menu
   -- showmode = false, -- we don't need to see things like -- INSERT -- anymore
   smartcase = true, -- smart case
   smartindent = true, -- make indenting smarter again
@@ -50,6 +50,7 @@ local global = {
 vim.opt.shortmess:append "Ac" -- Disable asking when editing file with swapfile.
 vim.opt.whichwrap:append "<,>,[,],h,l"
 vim.opt.iskeyword:append "-"
+
 vim.keymap.set("n", "<Space>", "<Nop>", { silent = true, remap = false })
 
 for name, value in pairs(options) do

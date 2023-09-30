@@ -5,7 +5,11 @@ M.general = {
     ["<C-Up>"] = { "<CMD>m .-2<CR>==", "󰜸 Move line up" },
     ["<C-Down>"] = { "<CMD>m .+1<CR>==", "󰜯 Move line down" },
   },
+
+
   n = {
+    ["<leader>sk"] = { "<CMD>put!=repeat(nr2char(10), v:count1)<CR>", "Add line above" },
+    ["<leader>sj"] = { "<CMD>put=repeat(nr2char(10), v:count1)<CR>", "Add line below" },
     ["<Esc>"] = {
       function()
         vim.cmd "noh"
@@ -60,73 +64,80 @@ M.general = {
 ]]
   },
 }
-
-M.nvterm = {
-  plugin = true,
-
-  t = {
-    -- toggle in terminal mode
-    ["<A-i>"] = {
-      function()
-        require("nvterm.terminal").toggle "float"
-      end,
-      "Toggle floating term",
-    },
-
-    ["<A-j>"] = {
-      function()
-        require("nvterm.terminal").toggle "horizontal"
-      end,
-      "Toggle horizontal term",
-    },
-
-    ["<A-l>"] = {
-      function()
-        require("nvterm.terminal").toggle "vertical"
-      end,
-      "Toggle vertical term",
-    },
-  },
-
+--[[
+M.terminal = {
   n = {
-    -- toggle in normal mode
-    ["<A-i>"] = {
-      function()
-        require("nvterm.terminal").toggle "float"
-      end,
-      "Toggle floating term",
-    },
-
-    ["<A-j>"] = {
-      function()
-        require("nvterm.terminal").toggle "horizontal"
-      end,
-      "Toggle horizontal term",
-    },
-
-    ["<A-l>"] = {
-      function()
-        require("nvterm.terminal").toggle "vertical"
-      end,
-      "Toggle vertical term",
-    },
-
-    -- new
+    -- spawn new terms
     ["<leader>h"] = {
       function()
-        require("nvterm.terminal").new "horizontal"
+        require("nvchad.term").new { pos = "sp", size = 0.3 }
       end,
       "New horizontal term",
     },
 
     ["<leader>v"] = {
       function()
-        require("nvterm.terminal").new "vertical"
+        require("nvchad.term").new { pos = "vsp", size = 0.3 }
       end,
       "New vertical term",
     },
+
+    -- toggle terms
+    ["<A-v>"] = {
+      function()
+        require("nvchad.term").toggle { pos = "vsp", id = "vtoggleTerm", size = 0.3 }
+      end,
+      "New vertical term",
+    },
+
+    ["<A-l>"] = {
+      function()
+        require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm", size = 0.2 }
+      end,
+      "New vertical term",
+    },
+
+    ["<A-j>"] = {
+      function()
+        require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
+      end,
+      "Toggleable Floating term",
+    },
+  },
+
+  -- toggle terms in terminal mode
+  t = {
+    ["<ESC>"] = {
+      function()
+        local win = vim.api.nvim_get_current_win()
+        vim.api.nvim_win_close(win, true)
+      end,
+      "close term in terminal mode",
+    },
+
+    ["<A-l>"] = {
+      function()
+        require("nvchad.term").toggle { pos = "vsp", id = "vtoggleTerm" }
+      end,
+      "New vertical term",
+    },
+
+    ["<A-j>"] = {
+      function()
+        require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm" }
+      end,
+      "New vertical term",
+    },
+
+    ["<A-i>"] = {
+      function()
+        require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
+      end,
+      "Toggleable Floating term",
+    },
   },
 }
+]]
 
 M.test = {
   n = {
