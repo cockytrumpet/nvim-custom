@@ -6,8 +6,38 @@ M.general = {
     ["<C-Down>"] = { "<CMD>m .+1<CR>==", "󰜯 Move line down" },
   },
 
+  v = {
+    ["<leader>fm"] = {
+      function()
+        require("conform").format {
+          lsp_fallback = true,
+          async = false,
+          timeout_ms = 4000,
+        }
+      end,
+      "Format file or range (in visual mode)",
+    },
+  },
 
   n = {
+    ["gX"] = {
+      function()
+        local word = vim.fn.expand "<cfile>"
+        local url = "https://github.com/" .. word
+        vim.ui.open(url)
+      end,
+      "󰙍 Open github repo",
+    },
+    ["<leader>fm"] = {
+      function()
+        require("conform").format {
+          lsp_fallback = true,
+          async = false,
+          -- timeout_ms = 500,
+        }
+      end,
+      "Format file or range (in visual mode)",
+    },
     ["<leader>sk"] = { "<CMD>put!=repeat(nr2char(10), v:count1)<CR>", "Add line above" },
     ["<leader>sj"] = { "<CMD>put=repeat(nr2char(10), v:count1)<CR>", "Add line below" },
     ["<Esc>"] = {

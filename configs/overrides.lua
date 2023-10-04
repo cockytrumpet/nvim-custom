@@ -15,6 +15,13 @@ M.treesitter = {
     "vimdoc",
     "python",
     "query",
+    "scala",
+    "json",
+    "yaml",
+    "dockerfile",
+    "diff",
+    "sql",
+    "bash",
   },
   sync_install = false,
   auto_install = true,
@@ -74,7 +81,6 @@ M.treesitter = {
   },
 }
 
-
 M.mason = {
   ensure_installed = {
     -- lua stuff
@@ -90,7 +96,7 @@ M.mason = {
 
     -- c/cpp stuff
     "clangd",
-    "clang-format",
+    "clang_format",
     "codelldb",
 
     -- Python
@@ -137,7 +143,6 @@ M.nvimtree = {
   },
 }
 
-
 M.telescope = {
   defaults = {
     file_ignore_patterns = {
@@ -169,7 +174,7 @@ M.telescope = {
     "luasnip",
     "lazygit",
     "fzf",
-    "file_browser"
+    "file_browser",
   },
   extensions = {
     fzf = {
@@ -199,7 +204,7 @@ M.telescope = {
         open_lazy_root_live_grep = "<C-r>g",
       },
     },
-  file_browser = {
+    file_browser = {
       hijack_netrw = true,
       --[[ hidden = true,
       follow = true,

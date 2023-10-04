@@ -20,7 +20,7 @@ local plugins = {
   -- Override plugin definition options
   {
     "neovim/nvim-lspconfig",
-    dependencies = {
+    --[[ dependencies = {
       -- format & linting
       {
         "nvimtools/none-ls.nvim",
@@ -28,7 +28,7 @@ local plugins = {
           require "custom.configs.none-ls"
         end,
       },
-    },
+    }, ]]
     config = function()
       require "plugins.configs.lspconfig"
       require "custom.configs.lspconfig"
@@ -38,7 +38,68 @@ local plugins = {
   -- override plugin configs
   {
     "williamboman/mason.nvim",
-    opts = overrides.mason,
+    dependencies = {
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
+    },
+    config = function()
+      local mason = require "mason"
+
+      local mason_tool_installer = require "mason-tool-installer"
+
+      -- enable mason and configure icons
+      mason.setup {
+        ui = {
+          icons = {
+            package_installed = "✓",
+            package_pending = "➜",
+            package_uninstalled = "✗",
+          },
+        },
+      }
+
+      mason_tool_installer.setup {
+        ensure_installed = require("custom.configs.overrides").mason.ensure_installed,
+      }
+    end,
+  },
+  {
+    "stevearc/conform.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      local conform = require "conform"
+
+      conform.setup {
+        formatters_by_ft = {
+          javascript = { "prettier" },
+          typescript = { "prettier" },
+          javascriptreact = { "prettier" },
+          typescriptreact = { "prettier" },
+          svelte = { "prettier" },
+          css = { "prettier" },
+          html = { "prettier" },
+          json = { "prettier" },
+          yaml = { "prettier" },
+          markdown = { "prettier" },
+          graphql = { "prettier" },
+          lua = { "stylua" },
+          python = { "isort", "black" },
+          cpp = { "clang_format" },
+          c = { "clang_format" },
+          -- scala = { "scalafmt" },
+        },
+        format_on_save = {
+          lsp_fallback = true,
+          async = false,
+          timeout_ms = 4000,
+        },
+      }
+
+      --[[ require("conform.formatters.scalafmt").args = {
+        "--stdin",
+        "--stdout",
+        "--non-interactive",
+      } ]]
+    end,
   },
   {
     "nvim-treesitter/nvim-treesitter",
@@ -52,8 +113,11 @@ local plugins = {
 
   -- Install plugins
   {
-    "folke/neodev.nvim",
-    opts = {},
+    "NStefan002/speedtyper.nvim",
+    cmd = "Speedtyper",
+    opts = {
+      -- your config
+    },
   },
   {
     "max397574/better-escape.nvim",
@@ -76,6 +140,10 @@ local plugins = {
     dependencies = {
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",
+      {
+        "stevearc/dressing.nvim",
+        opts = {},
+      },
     },
     config = function()
       require "custom.configs.noice"
@@ -170,6 +238,7 @@ local plugins = {
         "mason",
         "oil",
         "nvterm",
+        "term",
         "query",
         "help",
         "NeogitStatus",
@@ -197,7 +266,7 @@ local plugins = {
       telescope = { -- options for the telescope extension
         reset_prompt_after_deletion = true, -- whether to reset prompt after session deleted
       },
-      config = function()
+      config = function(opts)
         vim.o.sessionoptions = "buffers,curdir,folds,globals,tabpages,winpos,winsize"
         require("persisted").setup(opts)
         require("telescope").load_extension "persisted"
@@ -234,8 +303,9 @@ local plugins = {
   },
   {
     "nvim-neotest/neotest",
-    ft = { "python" },
+    ft = { "python", "c", "cpp", "scala" },
     dependencies = {
+      "stevanmilic/neotest-scala",
       "antoinemadec/FixCursorHold.nvim",
       "nvim-neotest/neotest-python",
       "nvim-neotest/neotest-plenary",

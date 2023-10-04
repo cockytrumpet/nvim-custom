@@ -1,5 +1,5 @@
 local builtin = require "statuscol.builtin"
-require("statuscol").setup {
+require("statuscol").setup { -- NOTE:
   relculright = true,
   bt_ignore = {
     "nofile",
@@ -28,6 +28,21 @@ require("statuscol").setup {
     "toggleterm",
   },
   segments = {
+    { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" },
+    {
+      sign = {
+        name = { "Diagnostic" },
+        maxwidth = 1,
+        colwidth = 2,
+        auto = true,
+      },
+      click = "v:lua.ScSa",
+    },
+    {
+      text = { " ", builtin.lnumfunc, " " },
+      click = "v:lua.ScLa",
+      condition = { true, builtin.not_empty },
+    },
     {
       sign = {
         name = { ".*" },
@@ -37,20 +52,8 @@ require("statuscol").setup {
       auto = true,
       click = "v:lua.ScSa",
     },
-    { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" },
     {
-      text = { " ", builtin.lnumfunc, " " },
-      click = "v:lua.ScLa",
-      condition = { true, builtin.not_empty },
-    },
-    {
-      sign = {
-        name = { "Diagnostic" },
-        maxwidth = 1,
-        colwidth = 2,
-        auto = true,
-      },
-      click = "v:lua.ScSa",
+      text = { " " },
     },
   },
 }

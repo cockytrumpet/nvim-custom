@@ -1,7 +1,3 @@
-require("neodev").setup({
-  -- add any options here, or leave empty to use the default settings
-})
-
 local on_attach = require("plugins.configs.lspconfig").on_attach
 local capabilities = require("plugins.configs.lspconfig").capabilities
 
@@ -54,7 +50,7 @@ lspconfig.pyright.setup {
   settings = {
     python = {
       analysis = {
-        typeCheckingMode = "off",
+        typeCheckingMode = "basic",
         autoSearchPaths = true,
         useLibraryCodeForTypes = true,
         diagnosticMode = "workspace",
@@ -75,6 +71,10 @@ local metals_config = require("metals").bare_config()
 metals_config.settings = {
   showImplicitArguments = true,
   excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
+  showInferredType = true,
+  superMethodLensesEnabled = true,
+  enableSemanticHighlighting = true,
+  showImplicitConversionsAndClasses = true,
 }
 
 -- *READ THIS*

@@ -133,7 +133,7 @@ noice.setup {
     },
     popupmenu = {
       relative = "editor",
-      backend = "cmp",
+      backend = "nui",
       position = {
         row = 8,
         col = "50%",
@@ -152,8 +152,12 @@ noice.setup {
     },
     mini = {
       zindex = 100,
-      win_options = { winblend = 0 },
+      win_options = { winblend = 20 },
     },
+  },
+  smart_move = {
+    enabled = true,
+    excluded_filetypes = { "cmp_menu", "cmp_docs", "notify" },
   },
   presets = {
     bottom_search = true,
