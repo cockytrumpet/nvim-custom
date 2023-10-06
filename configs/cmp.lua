@@ -152,6 +152,15 @@ M.cmp = {
       scrolloff = 0,
       col_offset = 0,
       scrollbar = false,
+      bordered = true,
+      border = "rounded",
+    },
+    documentation = {
+      scrolloff = 0,
+      col_offset = 0,
+      scrollbar = false,
+      bordered = true,
+      border = "rounded",
     },
   },
   completion = {
