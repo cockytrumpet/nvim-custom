@@ -1,5 +1,11 @@
 local M = {}
 
+M.disabled = {
+  n = {
+    ["<C-n>"] = "",
+  },
+}
+
 M.general = {
   i = {
     ["<C-Up>"] = { "<CMD>m .-2<CR>==", "󰜸 Move line up" },
@@ -20,6 +26,12 @@ M.general = {
   },
 
   n = {
+    ["<leader>a"] = {
+      function()
+        require("neogen").generate()
+      end,
+      desc = "Add Docstring",
+    },
     ["gX"] = {
       function()
         local word = vim.fn.expand "<cfile>"
@@ -54,7 +66,7 @@ M.general = {
       end,
       "󱓡 Toggle split/join",
     },
-    [";"] = { ":", "enter command mode", opts = { nowait = true } },
+    -- [";"] = { ":", "enter command mode", opts = { nowait = true } },
     ["<C-Up>"] = { "<CMD>m .-2<CR>==", "󰜸 Move line up" },
     ["<C-Down>"] = { "<CMD>m .+1<CR>==", "󰜯 Move line down" },
     ["<A-d>"] = { "<CMD>MCstart<CR>", "Multi cursor" },
@@ -66,7 +78,7 @@ M.general = {
     ["<leader>K"] = { "<cmd> TestLineDiag <CR>", "pytest line diagnostics" },
     ["<leader>rf"] = {
       function()
-        run_code()
+        _G.run_code()
       end,
       "run file",
     },
@@ -169,13 +181,21 @@ M.terminal = {
 }
 ]]
 
+M.nvimtree = {
+  plugin = true,
+
+  n = {
+    ["<leader>e"] = { "<cmd> NvimTreeToggle <CR>", "Toggle nvimtree" },
+  },
+}
+
 M.test = {
   n = {
     ["<leader>nt"] = {
       function()
         require("neotest").summary.toggle()
       end,
-      "󰤑 Run neotest",
+      "󰤑 Neotest summary",
     },
   },
 }
