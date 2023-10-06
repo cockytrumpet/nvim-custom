@@ -46,7 +46,7 @@ local global = {
   mkdp_auto_close = false, -- Don't Exit Preview When Switching Buffers
   mapleader = " ", -- Set mapleader to space
 }
-
+vim.cmd "au TextYankPost * silent! lua vim.highlight.on_yank()"
 vim.opt.shortmess:append "Ac" -- Disable asking when editing file with swapfile.
 vim.opt.whichwrap:append "<,>,[,],h,l"
 vim.opt.iskeyword:append "-"
