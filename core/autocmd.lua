@@ -27,6 +27,15 @@ vim.api.nvim_create_autocmd({ "User" }, {
     api.tree.toggle { find_file = true, focus = false }
   end,
 })
+
+vim.api.nvim_create_autocmd({ "User" }, {
+  pattern = "PersistedTelescopeLoadPre",
+  group = group,
+  callback = function()
+    vim.api.nvim_input "<ESC>:%bd!<CR>"
+  end,
+})
+
 -- Auto resize panes when resizing nvim window
 autocmd("VimResized", {
   pattern = "*",
