@@ -21,27 +21,7 @@ lspconfig.clangd.setup {
     "--offset-encoding=utf-16",
   },
 }
---[[
-lspconfig.pylsp.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "python" },
-  settings = {
-    pylsp = {
-      plugins = {
-        pycodestyle = {
-          ignore = {'E226,E302,E41,W391,W503'},
-          maxLineLength = 100
-        },
-        flake8 = {
-          ignore = {'E226,E302,E41,W391,W503'},
-          maxLineLength = 100
-        }
-      }
-    }
-  }
-}
-]]
+
 lspconfig.pyright.setup {
   on_attach = on_attach,
   capabilities = capabilities,
@@ -61,6 +41,19 @@ lspconfig.pyright.setup {
     },
   },
   -- single_file = true,
+}
+
+lspconfig.ruff_lsp.setup {
+  -- organize imports disabled, since we are already using `isort` for that
+  -- alternative, this can be enabled to make `organize imports`
+  -- available as code action
+  settings = {
+    organizeImports = false,
+  },
+  -- disable ruff as hover provider to avoid conflicts with pyright
+  on_attach = function(client)
+    client.server_capabilities.hoverProvider = false
+  end,
 }
 
 -- Metals setup

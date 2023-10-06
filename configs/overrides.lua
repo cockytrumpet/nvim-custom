@@ -50,17 +50,77 @@ M.treesitter = {
       lookahead = true,
       include_surrounding_whitespace = true,
       keymaps = {
-        ["af"] = { query = "@function.outer", desc = "ts: all function" },
+        ["af"] = { query = "@function.outer", desc = "ts: around function" },
         ["if"] = { query = "@function.inner", desc = "ts: inner function" },
-        ["ac"] = { query = "@class.outer", desc = "ts: all class" },
+        ["aF"] = { query = "@call.outer", desc = "Select outer part of a function call" },
+        ["iF"] = { query = "@call.inner", desc = "Select inner part of a function call" },
+
+        ["ac"] = { query = "@class.outer", desc = "ts: around class" },
         ["ic"] = { query = "@class.inner", desc = "ts: inner class" },
-        ["aC"] = { query = "@conditional.outer", desc = "ts: all conditional" },
+
+        ["aC"] = { query = "@conditional.outer", desc = "ts: around conditional" },
         ["iC"] = { query = "@conditional.inner", desc = "ts: inner conditional" },
+
         ["aH"] = { query = "@assignment.lhs", desc = "ts: assignment lhs" },
         ["aL"] = { query = "@assignment.rhs", desc = "ts: assignment rhs" },
+
+        ["ap"] = { query = "@parameter.outer", desc = "ts: outer parameter/argument" },
+        ["ip"] = { query = "@parameter.inner", desc = "ts: inner parameter/argument" },
+
+        ["al"] = { query = "@loop.outer", desc = "ts: outer loop" },
+        ["il"] = { query = "@loop.inner", desc = "ts: inner loop" },
       },
     },
   },
+  swap = {
+    enable = true,
+    swap_next = {
+      ["<leader>np"] = "@parameter.inner", -- swap parameters/argument with next
+      ["<leader>nf"] = "@function.outer", -- swap function with next
+    },
+    swap_previous = {
+      ["<leader>pp"] = "@parameter.inner", -- swap parameters/argument with prev
+      ["<leader>pf"] = "@function.outer", -- swap function with previous
+    },
+  },
+  move = {
+    enable = true,
+    set_jumps = true, -- whether to set jumps in the jumplist
+    goto_next_start = {
+      ["]f"] = { query = "@call.outer", desc = "Next function call start" },
+      ["]m"] = { query = "@function.outer", desc = "Next method/function def start" },
+      ["]c"] = { query = "@class.outer", desc = "Next class start" },
+      ["]i"] = { query = "@conditional.outer", desc = "Next conditional start" },
+      ["]l"] = { query = "@loop.outer", desc = "Next loop start" },
+
+      -- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
+      -- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
+      ["]s"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
+      ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+    },
+    goto_next_end = {
+      ["]F"] = { query = "@call.outer", desc = "Next function call end" },
+      ["]M"] = { query = "@function.outer", desc = "Next method/function def end" },
+      ["]C"] = { query = "@class.outer", desc = "Next class end" },
+      ["]I"] = { query = "@conditional.outer", desc = "Next conditional end" },
+      ["]L"] = { query = "@loop.outer", desc = "Next loop end" },
+    },
+    goto_previous_start = {
+      ["[f"] = { query = "@call.outer", desc = "Prev function call start" },
+      ["[m"] = { query = "@function.outer", desc = "Prev method/function def start" },
+      ["[c"] = { query = "@class.outer", desc = "Prev class start" },
+      ["[i"] = { query = "@conditional.outer", desc = "Prev conditional start" },
+      ["[l"] = { query = "@loop.outer", desc = "Prev loop start" },
+    },
+    goto_previous_end = {
+      ["[F"] = { query = "@call.outer", desc = "Prev function call end" },
+      ["[M"] = { query = "@function.outer", desc = "Prev method/function def end" },
+      ["[C"] = { query = "@class.outer", desc = "Prev class end" },
+      ["[I"] = { query = "@conditional.outer", desc = "Prev conditional end" },
+      ["[L"] = { query = "@loop.outer", desc = "Prev loop end" },
+    },
+  },
+
   tree_setter = {
     enable = true,
   },
@@ -96,12 +156,12 @@ M.mason = {
 
     -- c/cpp stuff
     "clangd",
-    "clang_format",
+    "clang-format",
     "codelldb",
 
     -- Python
     "pyright",
-    "ruff",
+    "ruff-lsp",
     "black",
     "debugpy",
     "isort",

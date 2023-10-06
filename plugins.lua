@@ -79,7 +79,7 @@ local plugins = {
           html = { "prettier" },
           json = { "prettier" },
           yaml = { "prettier" },
-          markdown = { "prettier" },
+          markdown = { "inject", "prettier" },
           graphql = { "prettier" },
           lua = { "stylua" },
           python = { "isort", "black" },
@@ -100,10 +100,6 @@ local plugins = {
         "--non-interactive",
       } ]]
     end,
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = overrides.treesitter,
   },
   {
     "nvim-tree/nvim-tree.lua",
@@ -198,17 +194,6 @@ local plugins = {
     config = true,
   },
   {
-    "tomiis4/Hypersonic.nvim",
-    event = "CmdlineEnter",
-    cmd = "Hypersonic",
-    config = function()
-      require("hypersonic").setup {
-        -- config
-        enable_cmdline = false,
-      }
-    end,
-  },
-  {
     "dreamsofcode-io/ChatGPT.nvim",
     event = "VeryLazy",
     dependencies = {
@@ -220,7 +205,7 @@ local plugins = {
       require("chatgpt").setup {}
     end,
   },
-  {
+  --[[ {
     "m4xshen/hardtime.nvim",
     dependencies = {
       "MunifTanjim/nui.nvim",
@@ -230,6 +215,8 @@ local plugins = {
     cmd = { "Hardtime" },
     opts = {
       enabled = true,
+      disable_mouse = false,
+      restricted_mode = "hint",
       disabled_filetypes = {
         "qf",
         "netrw",
@@ -246,7 +233,7 @@ local plugins = {
         "NeogitLogView",
       },
     },
-  },
+  }, ]]
   {
     "olimorris/persisted.nvim",
     event = "VimEnter",
@@ -258,7 +245,7 @@ local plugins = {
       should_autosave = nil, -- function to determine if a session should be autosaved
       autoload = true, -- automatically load the session for the cwd on Neovim startup
       on_autoload_no_session = nil,
-      follow_cwd = true,
+      follow_cwd = false,
       -- ignored_dirs = {
       --   "~/.config",
       --   "~/.local/nvim",
@@ -267,7 +254,7 @@ local plugins = {
         reset_prompt_after_deletion = true, -- whether to reset prompt after session deleted
       },
       config = function(opts)
-        vim.o.sessionoptions = "buffers,curdir,folds,globals,tabpages,winpos,winsize"
+        vim.o.sessionoptions = "buffers,curdir,folds,options,tabpages,winpos,winsize"
         require("persisted").setup(opts)
         require("telescope").load_extension "persisted"
         require("core.utils").load_mappings "persisted"
@@ -334,7 +321,6 @@ local plugins = {
   },
   {
     "Wansmer/treesj",
-    keys = { "<leader>s" },
     config = function()
       require("treesj").setup {
         use_default_keymaps = true,
@@ -459,6 +445,85 @@ local plugins = {
     end,
   },
   {
+    "Vigemus/iron.nvim",
+    keys = {
+      { "<leader>i", vim.cmd.IronRepl, desc = "󱠤 Toggle REPL" },
+      { "<leader>I", vim.cmd.IronRestart, desc = "󱠤 Restart REPL" },
+
+      -- these keymaps need no right-hand-side, since that is defined by the
+      -- plugin config further below
+      { "+", mode = { "n", "x" }, desc = "󱠤 Send-to-REPL Operator" },
+      { "++", desc = "󱠤 Send Line to REPL" },
+    },
+
+    -- since irons's setup call is `require("iron.core").setup`, instead of
+    -- `require("iron").setup` like other plugins would do, we need to tell
+    -- lazy.nvim which module to via the `main` key
+    main = "iron.core",
+
+    opts = {
+      keymaps = {
+        send_line = "++",
+        visual_send = "+",
+        send_motion = "+",
+      },
+      config = {
+        -- this defined how the repl is opened. Here we set the REPL window
+        -- to open in a horizontal split to a bottom, with a height of 10
+        -- cells.
+        repl_open_cmd = "horizontal bot 10 split",
+
+        -- This defines which binary to use for the REPL. If `ipython` is
+        -- available, it will use `ipython`, otherwise it will use `python3`.
+        -- since the python repl does not play well with indents, it's
+        -- preferable to use `ipython` or `bypython` here.
+        -- (see: https://github.com/Vigemus/iron.nvim/issues/348)
+        repl_definition = {
+          python = {
+            command = function()
+              local ipythonAvailable = vim.fn.executable "ipython" == 1
+              local binary = ipythonAvailable and "ipython" or "python3"
+              return { binary }
+            end,
+          },
+        },
+      },
+    },
+  },
+  {
+    "danymat/neogen",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    config = true,
+    -- Uncomment next line if you want to follow only stable versions
+    -- version = "*"
+  },
+  {
+    "chrisgrieser/nvim-puppeteer",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    ft = "python",
+  },
+
+  -- better indentation behavior
+  -- by default, vim has some weird indentation behavior in some edge cases,
+  -- which this plugin fixes
+  { "Vimjas/vim-python-pep8-indent", ft = "python" },
+
+  -- select virtual environments
+  -- - makes pyright and debugpy aware of the selected virtual environment
+  -- - Select a virtual environment with `:VenvSelect`
+  {
+    "linux-cultist/venv-selector.nvim",
+    event = "BufReadPre",
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "nvim-telescope/telescope.nvim",
+      "mfussenegger/nvim-dap-python",
+    },
+    opts = {
+      dap_enabled = true, -- makes the debugger work with venv
+    },
+  },
+  {
     "karb94/neoscroll.nvim",
     event = "VeryLazy",
     config = function()
@@ -520,6 +585,28 @@ local plugins = {
   },
   {
     "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        lazy = true,
+        config = function()
+          require("nvim-treesitter.configs").setup {}
+          local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
+
+          -- vim way: ; goes to the direction you were moving.
+          vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
+          vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_opposite)
+
+          -- Optionally, make builtin f, F, t, T also repeatable with ; and ,
+          vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f)
+          vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F)
+          vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t)
+          vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T)
+        end,
+      },
+    },
     opts = overrides.treesitter,
   },
   {
@@ -655,8 +742,10 @@ local plugins = {
     dependencies = {
       "delphinus/cmp-ctags",
       "hrsh7th/cmp-cmdline",
+      "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-nvim-lsp-document-symbol",
       "hrsh7th/cmp-nvim-lsp-signature-help",
+      "saadparwaiz1/cmp_luasnip",
       "onsails/lspkind-nvim",
       "hrsh7th/cmp-copilot",
       --[[ {
