@@ -1,5 +1,5 @@
 local builtin = require "statuscol.builtin"
-require("statuscol").setup { -- NOTE:
+require("statuscol").setup {
   relculright = true,
   bt_ignore = {
     "nofile",
@@ -18,7 +18,7 @@ require("statuscol").setup { -- NOTE:
     "dapui_breakpoints",
     "dapui_scopes",
     "help",
-    "vim",
+    -- "vim",
     "alpha",
     "dashboard",
     "neo-tree",

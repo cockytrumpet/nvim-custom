@@ -98,6 +98,8 @@ dap.configurations.scala = {
     name = "RunOrTest",
     metals = {
       runType = "runOrTestFile",
+      mainClass = "Main",
+      -- buildTarget = "root",
       --args = { "firstArg", "secondArg", "thirdArg" }, -- here just as an example
     },
   },
@@ -107,6 +109,8 @@ dap.configurations.scala = {
     name = "Test Target",
     metals = {
       runType = "testTarget",
+      mainClass = "Main",
+      -- buildTarget = "test",
     },
   },
 }

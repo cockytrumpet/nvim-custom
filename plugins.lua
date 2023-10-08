@@ -151,6 +151,10 @@ local plugins = {
       "nvim-lua/plenary.nvim",
       "mfussenegger/nvim-dap",
     },
+    config = function()
+      require("core.utils").load_mappings "lspconfig"
+      -- require("telescope").extensions.metals.commands()
+    end,
   },
   {
     "mbbill/undotree",
@@ -246,15 +250,12 @@ local plugins = {
       autoload = true, -- automatically load the session for the cwd on Neovim startup
       on_autoload_no_session = nil,
       follow_cwd = false,
-      -- ignored_dirs = {
-      --   "~/.config",
-      --   "~/.local/nvim",
-      -- },
+      -- ignored_dirs = { "~" },
       telescope = { -- options for the telescope extension
         reset_prompt_after_deletion = true, -- whether to reset prompt after session deleted
       },
       config = function(opts)
-        vim.o.sessionoptions = "buffers,curdir,folds,options,tabpages,winpos,winsize"
+        vim.o.sessionoptions = "buffers,curdir,folds,globals,tabpages,winpos,winsize"
         require("persisted").setup(opts)
         require("telescope").load_extension "persisted"
         require("core.utils").load_mappings "persisted"
