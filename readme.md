@@ -17,7 +17,7 @@ git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
 Clone the repository and install the plugins:
 
 ```sh
-rm -rf ~/.config/nvim/lua/vustom
+rm -rf ~/.config/nvim/lua/custom
 git clone git@github.com:cockytrumpet/nvim-custom ~/.config/nvim/lua/custom
 ```
 
