@@ -23,8 +23,10 @@ vim.api.nvim_create_autocmd({ "User" }, {
   pattern = "PersistedLoadPost",
   group = group,
   callback = function()
-    local api = require "nvim-tree.api"
-    api.tree.toggle { find_file = true, focus = false }
+    vim.schedule(function()
+      local api = require "nvim-tree.api"
+      api.tree.toggle { find_file = true, focus = false }
+    end)
   end,
 })
 
