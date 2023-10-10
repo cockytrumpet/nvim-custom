@@ -109,6 +109,54 @@ local plugins = {
 
   -- Install plugins
   {
+    "kevinhwang91/nvim-bqf",
+    ft = "qf",
+  },
+  {
+    "altermo/ultimate-autopair.nvim",
+    event = { "InsertEnter", "CmdlineEnter" },
+    branch = "v0.6", --recomended as each new version will have breaking changes
+    opts = {
+      --Config goes here
+      tabout = {
+        enable = true,
+        hopout = true,
+        tabkey = "<Tab>",
+        backwards_tabkey = "<S-Tab>",
+      },
+    },
+  },
+  {
+    "nvim-neorg/neorg",
+    build = ":Neorg sync-parsers",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    cmd = "Neorg",
+    config = function()
+      require("neorg").setup {
+        load = {
+          ["core.defaults"] = {},
+          ["core.concealer"] = {},
+          ["core.dirman"] = {
+            config = {
+              workspaces = {
+                notes = "~/notes",
+              },
+              default_workspace = "notes",
+            },
+          },
+        },
+      }
+      --[[
+      vim.wo.foldlevel = 99
+      vim.wo.conceallevel = 2
+]]
+    end,
+  },
+  {
+    "hinell/lsp-timeout.nvim",
+    dependencies = { "neovim/nvim-lspconfig" },
+  },
+  {
     "NStefan002/speedtyper.nvim",
     cmd = "Speedtyper",
     opts = {
@@ -250,12 +298,12 @@ local plugins = {
       autoload = true, -- automatically load the session for the cwd on Neovim startup
       on_autoload_no_session = nil,
       follow_cwd = false,
-      -- ignored_dirs = { "~" },
+      ignored_dirs = {},
       telescope = { -- options for the telescope extension
         reset_prompt_after_deletion = true, -- whether to reset prompt after session deleted
       },
       config = function(opts)
-        vim.o.sessionoptions = "buffers,curdir,folds,globals,tabpages,winpos,winsize"
+        vim.o.sessionoptions = "buffers,curdir,folds,options,tabpages,winpos,winsize"
         require("persisted").setup(opts)
         require("telescope").load_extension "persisted"
         require("core.utils").load_mappings "persisted"

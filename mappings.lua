@@ -26,6 +26,7 @@ M.general = {
   },
 
   n = {
+    ["gw"] = { "silent grep! <cword> | cw<CR>", "Grep Word" },
     ["<leader>a"] = {
       function()
         require("neogen").generate()

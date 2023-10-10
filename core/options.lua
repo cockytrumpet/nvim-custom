@@ -53,6 +53,11 @@ vim.opt.iskeyword:append "-"
 
 vim.keymap.set("n", "<Space>", "<Nop>", { silent = true, remap = false })
 
+if vim.fn.executable "rg" then
+  vim.opt.grepprg = "rg --vimgrep"
+  vim.opt.grepformat = "%f:%l:%c:%m"
+end
+
 for name, value in pairs(options) do
   vim.opt[name] = value
 end
