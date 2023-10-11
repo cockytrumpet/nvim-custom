@@ -38,6 +38,14 @@ vim.api.nvim_create_autocmd({ "User" }, {
   end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "neotest-summary" },
+  callback = function()
+    require("ufo").detach()
+    vim.opt_local.foldenable = false
+  end,
+})
+
 -- Auto resize panes when resizing nvim window
 autocmd("VimResized", {
   pattern = "*",
