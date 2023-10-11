@@ -176,8 +176,8 @@ M.cmp = {
     }, ]]
   },
   mapping = {
-    ["<Up>"] = require("cmp").mapping.select_prev_item(),
-    ["<Down>"] = require("cmp").mapping.select_next_item(),
+    ["<C-p>"] = require("cmp").mapping.select_prev_item(),
+    ["<C-n>"] = require("cmp").mapping.select_next_item(),
     ["<Tab>"] = require("cmp").mapping(function(fallback)
       if require("luasnip").expandable() then
         require("luasnip").expand()
