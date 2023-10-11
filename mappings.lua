@@ -26,6 +26,10 @@ M.general = {
   },
 
   n = {
+    ["<leader>tn"] = { "<CMD>tabn<CR>", "Next tab" },
+    ["<leader>tp"] = { "<CMD>tabp<CR>", "Previous tab" },
+    ["<leader>tc"] = { "<CMD>tabc<CR>", "Close tab" },
+    ["<leader>ta"] = { "<CMD>tabnew<CR>", "New tab" },
     ["gw"] = { "<CMD>silent grep! <cword> | cw<CR>", "Grep Word" },
     ["<leader>a"] = {
       function()
