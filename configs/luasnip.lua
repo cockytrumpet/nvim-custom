@@ -12,7 +12,13 @@ require("luasnip.loaders.from_lua").load { paths = "~/.config/nvim/lua/custom/lu
 
 local types = require "luasnip.util.types"
 
+vim.cmd [[command! LuaSnipEdit :lua require("luasnip.loaders.from_lua").edit_snippet_files()]]
+vim.cmd [[autocmd BufEnter */luasnip/*.lua nnoremap <silent> <buffer> <CR> /-- End Snippets --<CR>O<Esc>O]]
+
 luasnip.setup {
+  history = true, --keep around last snippet local to jump back
+  updateevents = "TextChanged,TextChangedI", --update changes as you type
+  enable_autosnippets = true,
   ext_opts = {
     [types.insertNode] = {
       unvisited = {
