@@ -170,6 +170,10 @@ M.mason = {
     "jsonlint",
     "json-lsp",
 
+    -- Ocaml
+    "ocaml-lsp",
+    "ocamlformat",
+
     "dockerfile-language-server",
     "yaml-language-server",
   },

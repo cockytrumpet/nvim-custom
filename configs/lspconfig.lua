@@ -13,6 +13,8 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+require("lspconfig").ocamllsp.setup {}
+
 lspconfig.clangd.setup {
   on_attach = on_attach,
   capabilities = capabilities,

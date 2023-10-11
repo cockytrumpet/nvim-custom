@@ -85,6 +85,7 @@ local plugins = {
           python = { "isort", "black" },
           cpp = { "clang-format" },
           c = { "clang-format" },
+          ocaml = { "ocamlformat" },
           -- scala = { "scalafmt" },
         },
         format_on_save = {
@@ -533,6 +534,13 @@ local plugins = {
             command = function()
               local ipythonAvailable = vim.fn.executable "ipython" == 1
               local binary = ipythonAvailable and "ipython" or "python3"
+              return { binary }
+            end,
+          },
+          ocaml = {
+            command = function()
+              local utopAvailable = vim.fn.executable "utop" == 1
+              local binary = utopAvailable and "utop" or "ocaml"
               return { binary }
             end,
           },
