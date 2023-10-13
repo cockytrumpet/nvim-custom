@@ -18,7 +18,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
     pcall(vim.cmd, "bw OUTLINE")
   end,
 })
-
+--[[
 vim.api.nvim_create_autocmd({ "User" }, {
   pattern = "PersistedLoadPost",
   group = group,
@@ -29,7 +29,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
     end)
   end,
 })
-
+]]
 vim.api.nvim_create_autocmd({ "User" }, {
   pattern = "PersistedTelescopeLoadPre",
   group = group,
@@ -246,7 +246,7 @@ autocmd("BufWritePre", {
   command = [[:%s/\s\+$//e]],
   group = augroup("TrimWhiteSpaceGrp", { clear = true }),
 })
-
+--[[
 -- Disable colorcolumn in blacklisted filetypes
 autocmd({ "FileType" }, {
   callback = function()
@@ -255,7 +255,7 @@ autocmd({ "FileType" }, {
     end
   end,
 })
-
+]]
 -- Disable scrolloff in blacklisted filetypes
 autocmd({ "BufEnter" }, {
   callback = function()
