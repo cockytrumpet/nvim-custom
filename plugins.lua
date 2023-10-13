@@ -20,15 +20,6 @@ local plugins = {
   -- Override plugin definition options
   {
     "neovim/nvim-lspconfig",
-    --[[ dependencies = {
-      -- format & linting
-      {
-        "nvimtools/none-ls.nvim",
-        config = function()
-          require "custom.configs.none-ls"
-        end,
-      },
-    }, ]]
     config = function()
       require "plugins.configs.lspconfig"
       require "custom.configs.lspconfig"
@@ -109,6 +100,8 @@ local plugins = {
   },
 
   -- Install plugins
+  { "onsails/lspkind.nvim" },
+  { "folke/neodev.nvim", opts = {} },
   {
     "kevinhwang91/nvim-bqf",
     ft = "qf",
@@ -299,7 +292,9 @@ local plugins = {
       autoload = true, -- automatically load the session for the cwd on Neovim startup
       on_autoload_no_session = nil,
       follow_cwd = false,
-      ignored_dirs = {},
+      ignored_dirs = {
+        -- "~/",
+      },
       telescope = { -- options for the telescope extension
         reset_prompt_after_deletion = true, -- whether to reset prompt after session deleted
       },
@@ -911,13 +906,13 @@ local plugins = {
         end,
       },
     },
-    event = "VeryLazy",
+    lazy = false,
     init = function()
       vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
       vim.o.foldcolumn = "1" -- '0' is not bad
       vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
       vim.o.foldlevelstart = 99
-      vim.o.foldenable = false -- Disable fold by default
+      vim.o.foldenable = true -- Disable fold by default
     end,
     config = function()
       require "custom.configs.ufo"

@@ -1,16 +1,7 @@
---[[ local ok, lspkind = pcall(require, "lspkind")
-if not ok then
-  return
-end
-
-lspkind.init {
-  symbol_map = {
-    Copilot = "",
-  },
-} ]]
-
 local M = {}
 local copilot_status_ok, copilot_cmp_comparators = pcall(require, "copilot_cmp.comparators")
+local lsp = require "lspconfig"
+
 local list_contains = vim.list_contains or vim.tbl_contains
 pcall(function()
   dofile(vim.g.base46_cache .. "cmp")
@@ -130,6 +121,35 @@ local disabled_buftypes = {
   "prompt",
 }
 
+local cmp_kinds = {
+  Text = "",
+  Method = "󰆧",
+  Function = "󰊕",
+  Constructor = "",
+  Field = "󰇽",
+  Variable = "󰂡",
+  Class = "󰠱",
+  Interface = "",
+  Module = "",
+  Property = "󰜢",
+  Unit = "",
+  Value = "󰎠",
+  Enum = "",
+  Keyword = "󰌋",
+  Snippet = "",
+  Color = "󰏘",
+  File = "󰈙",
+  Reference = "",
+  Folder = "󰉋",
+  EnumMember = "",
+  Constant = "󰏿",
+  Struct = "",
+  Event = "",
+  Operator = "󰆕",
+  TypeParameter = "󰅲",
+  Codeium = "",
+}
+
 M.cmp = {
   enabled = function()
     local disabled = false
@@ -147,6 +167,10 @@ M.cmp = {
 
     return true
   end,
+
+  view = {
+    -- entries = "native",
+  },
   window = {
     completion = {
       scrolloff = 0,
@@ -169,7 +193,6 @@ M.cmp = {
     keyword_length = 2,
   },
   experimental = {
-    native_menu = false,
     ghost_text = false,
     --[[ ghost_text = {
       hl_group = "Comment",
@@ -217,7 +240,7 @@ M.cmp = {
   performance = {
     debounce = 300,
     throttle = 60,
-    max_view_entries = 10,
+    max_view_entries = 20,
     fetching_timeout = 200,
   },
   snippet = {
@@ -256,7 +279,7 @@ M.cmp = {
     { name = "nvim_lua" },
     {
       name = "nvim_lsp",
-      keyword_length = 5,
+      keyword_length = 2,
       -- entry_filter = function(entry, ctx)
       --   return require("cmp").lsp.CompletionItemKind.Text ~= entry:get_kind()
       -- end,
@@ -264,7 +287,7 @@ M.cmp = {
     },
     {
       name = "buffer",
-      keyword_length = 5,
+      keyword_length = 4,
       option = buffer_option,
     },
   },
@@ -290,28 +313,64 @@ M.cmp = {
       require("cmp").config.compare.sort_text,
     },
   },
-  --[[ formatting = {
-    format = require("lspkind").cmp_format {
-      mode = "symbol",
-      maxwidth = 50,
-      ellipsis_char = "...",
-      symbol_map = { Codeium = "" },
-      with_text = true,
-      menu = {
-        buffer = "[Buffer]",
-        nvim_lsp = "[LSP]",
-        nvim_lua = "[Lua]",
-        treesitter = "[TS]",
-        luasnip = "[LuaSnip]",
-        cmp_tabnine = "[TabNine]",
-        cmdline = "[Cmdline]",
-        path = "[Path]",
-        ctags = "[CTags]",
-        copilot = "[Copilot]",
-        codeium = "[Codeium]",
-      },
-    },
-  }, ]]
+  formatting = {
+    fields = { "abbr", "kind", "menu" },
+    format = function(entry, vim_item)
+      local lspkind_ok, lspkind = pcall(require, "lspkind")
+      if not lspkind_ok then
+        vim_item.kind = cmp_kinds[vim_item.kind] or ""
+
+        -- how do i get the lsp client name?
+        local lsp_completion_context = get_lsp_completion_context(entry, vim_item)
+        local lsp_icon = "🅻"
+        if lsp_completion_context == "ocamllsp" then
+          lsp_icon = "🐫"
+        end
+        if lsp_completion_context == "ruff_lsp" then
+          lsp_icon = "🐍"
+        end
+        if lsp_completion_context == "pyright" then
+          lsp_icon = "🐍"
+        end
+        if lsp_completion_context == "clangd" then
+          lsp_icon = "🅲"
+        end
+        if lsp_completion_context == "luasnip" then
+          lsp_icon = "🅳"
+        end
+        if lsp_completion_context == "metals" then
+          lsp_icon = "🅼"
+        end
+        vim_item.menu = ({
+          buffer = "🅱",
+          nvim_lsp = lsp_icon,
+          treesitter = "🌳",
+        })[entry.source.name]
+      else
+        local custom_icon = {
+          codeium = " AI",
+        }
+        if entry.source.name == "codeium" then
+          vim_item.kind = custom_icon.codeium
+        end
+
+        return lspkind.cmp_format {
+          menu = {
+            buffer = "[Buffer]",
+            nvim_lsp = "[LSP]",
+            luasnip = "[LuaSnip]",
+            nvim_lua = "[Lua]",
+            copilot = "[Copilot]",
+            codeium = "[Codeium]",
+            ctags = "[Ctags]",
+            treesitter = "[Treesitter]",
+            path = "[Path]",
+          },
+        }(entry, vim_item)
+      end
+      return vim_item
+    end,
+  },
 }
 
 return M
