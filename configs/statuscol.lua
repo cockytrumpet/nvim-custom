@@ -38,7 +38,7 @@ require("statuscol").setup {
         name = { "Diagnostic" },
         maxwidth = 1,
         colwidth = 2,
-        auto = true,
+        auto = false,
       },
       click = "v:lua.ScSa",
     },
@@ -54,7 +54,7 @@ require("statuscol").setup {
         maxwidth = 1,
         colwidth = 1,
       },
-      auto = true,
+      auto = false,
       click = "v:lua.ScSa",
     },
     {
