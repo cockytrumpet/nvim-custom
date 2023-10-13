@@ -21,10 +21,8 @@ local function substitute(cmd)
   cmd = cmd:gsub("#", vim.fn.expand "#")
   cmd = cmd:gsub("$altFile", vim.fn.expand "#")
 
-
   return cmd
 end
-
 
 function _G.run_code()
   local fileExtension = vim.fn.expand "%:e"
@@ -84,15 +82,16 @@ function _G.run_code()
     scala = {
       default = "scala %",
     },
+    ml = {
+      default = "ocaml %",
+    },
   }
-
 
   if supportedFiletypes[fileExtension] then
     local choices = {}
     for choice, _ in pairs(supportedFiletypes[fileExtension]) do
       table.insert(choices, choice)
     end
-
 
     if #choices == 0 then
       vim.notify("It doesn't contain any command", vim.log.levels.WARN, { title = "Code Runner" })
@@ -111,7 +110,6 @@ function _G.run_code()
     vim.notify("The filetype isn't included in the list", vim.log.levels.WARN, { title = "Code Runner" })
   end
 end
-
 
 P = function(v)
   print(vim.inspect(v))
