@@ -1,5 +1,33 @@
-local on_attach = require("plugins.configs.lspconfig").on_attach
-local capabilities = require("plugins.configs.lspconfig").capabilities
+require("neodev").setup {
+  -- add any options here, or leave empty to use the default settings
+}
+
+local c = require("plugins.configs.lspconfig").capabilities
+c.textDocument.completion.completionItem.snippetSupport = true
+c.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    "documentation",
+    "detail",
+    "additionalTextEdits",
+  },
+}
+local capabilities = require("cmp_nvim_lsp").update_capabilities(c)
+local on_attach = function(client, bufnr)
+  if client.server_capabilities.inlayHintProvider then
+    vim.lsp.inlay_hint(bufnr, true)
+  end
+  if client.supports_method "textDocument/codeLens" then
+    local codelens = vim.api.nvim_create_augroup("LSPCodeLens", { clear = true })
+    vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "CursorHold" }, {
+      group = codelens,
+      callback = function()
+        vim.lsp.codelens.refresh()
+      end,
+      buffer = bufnr,
+    })
+  end
+  return require("plugins.configs.lspconfig").on_attach
+end
 
 local lspconfig = require "lspconfig"
 
@@ -13,7 +41,13 @@ for _, lsp in ipairs(servers) do
   }
 end
 
-require("lspconfig").ocamllsp.setup {}
+lspconfig.ocamllsp.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = { "ocamllsp" },
+  filetypes = { "ocaml", "ocaml_interface", "ocamllex", "reason", "dune" },
+  root_dir = lspconfig.util.root_pattern("*.opam", "esy.json", "package.json", "esy.lock", "dune", "bsconfig.json"),
+}
 
 lspconfig.clangd.setup {
   on_attach = on_attach,
