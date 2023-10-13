@@ -11,7 +11,7 @@ c.textDocument.completion.completionItem.resolveSupport = {
     "additionalTextEdits",
   },
 }
-local capabilities = require("cmp_nvim_lsp").update_capabilities(c)
+local capabilities = require("cmp_nvim_lsp").default_capabilities(c)
 local on_attach = function(client, bufnr)
   if client.server_capabilities.inlayHintProvider then
     vim.lsp.inlay_hint(bufnr, true)
