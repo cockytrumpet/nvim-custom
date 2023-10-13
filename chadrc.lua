@@ -47,7 +47,7 @@ M.ui = {
 }
 
 M.settings = {
-  cc_size = "130",
+  -- cc_size = "130",
   so_size = 10,
 
   -- Blacklisted files where cc and so must be disabled
