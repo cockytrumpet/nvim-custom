@@ -28,7 +28,11 @@ require("statuscol").setup {
     "toggleterm",
   },
   segments = {
-    { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" },
+    {
+      text = { builtin.foldfunc, " " },
+      click = "v:lua.ScFa",
+      condition = { true },
+    },
     {
       sign = {
         name = { "Diagnostic" },
@@ -45,7 +49,8 @@ require("statuscol").setup {
     },
     {
       sign = {
-        name = { ".*" },
+        namespace = { "gitsign*" },
+        -- name = { ".*" },
         maxwidth = 1,
         colwidth = 1,
       },
