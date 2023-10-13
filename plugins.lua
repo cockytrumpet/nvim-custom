@@ -299,7 +299,7 @@ local plugins = {
         reset_prompt_after_deletion = true, -- whether to reset prompt after session deleted
       },
       config = function(opts)
-        vim.o.sessionoptions = "buffers,curdir,options,winpos,winsize"
+        vim.o.sessionoptions = "buffers,curdir,options,localoptions,globals,folds,winpos,winsize"
         -- vim.o.sessionoptions = "buffers,curdir,folds,globals,tabpages,winpos,winsize"
         require("persisted").setup(opts)
         require("telescope").load_extension "persisted"
