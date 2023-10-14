@@ -5,23 +5,25 @@ local settings = require("custom.chadrc").settings
 -- General Settings
 local general = augroup("General Settings", { clear = true })
 
--- Don't let some things get persisted
-local group = vim.api.nvim_create_augroup("PersistedHooks", {})
+local persisted_group = vim.api.nvim_create_augroup("PersistedHooks", {})
 
+-- Don't let some things get persisted
 vim.api.nvim_create_autocmd({ "User" }, {
   pattern = "PersistedSavePre",
-  group = group,
+  group = persisted_group,
   callback = function()
-    pcall(vim.cmd, "bw minimap")
-    pcall(vim.cmd, "bw NvimTree")
-    pcall(vim.cmd, "bw Trouble")
-    pcall(vim.cmd, "bw OUTLINE")
+    local filetypes_to_close = { "minimap", "NvimTree", "Trouble", "OUTLINE" }
+    for _, filetype in ipairs(filetypes_to_close) do
+      local cmd = "bw " .. filetype
+      pcall(vim.cmd, cmd)
+    end
   end,
 })
+
 --[[
 vim.api.nvim_create_autocmd({ "User" }, {
   pattern = "PersistedLoadPost",
-  group = group,
+  group = persisted_group,
   callback = function()
     vim.schedule(function()
       local api = require "nvim-tree.api"
@@ -32,7 +34,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
 ]]
 vim.api.nvim_create_autocmd({ "User" }, {
   pattern = "PersistedTelescopeLoadPre",
-  group = group,
+  group = persisted_group,
   callback = function()
     vim.api.nvim_input "<ESC>:%bd!<CR>"
   end,
