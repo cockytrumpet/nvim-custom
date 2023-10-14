@@ -9,10 +9,6 @@ M.override = {
   Comment = {
     italic = true,
   },
-  --[[ Folded = {
-    bg = "NONE",
-    fg = "grey",
-  }, ]]
 }
 
 ---@type HLTable
@@ -34,6 +30,14 @@ M.add = {
   StCcText = {
     fg = "pink",
     bg = "#262a2f",
+  },
+  NeogitDiffDeleteHighlight = {
+    fg = "red",
+    bg = "#3d1212",
+  },
+  NeogitDiffDelete = {
+    fg = "#B13B5C",
+    bg = "#3d1212",
   },
 }
 
