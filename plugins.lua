@@ -215,10 +215,12 @@ local plugins = {
       "ibhagwan/fzf-lua", -- optional
     },
     config = true,
-    -- event = "VeryLazy",
     cmd = { "Neogit" },
     setup = function()
-      require("neogit").setup {}
+      require("neogit").setup {
+        console_timeout = 10000,
+        auto_show_console = false,
+      }
     end,
   },
   {
