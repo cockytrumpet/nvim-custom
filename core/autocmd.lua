@@ -38,8 +38,12 @@ vim.api.nvim_create_autocmd({ "User" }, {
   end,
 })
 
+-- disable folds in these filetypes
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "neotest-summary" },
+  pattern = {
+    "neotest-summary",
+    "Neogit*",
+  },
   callback = function()
     require("ufo").detach()
     vim.opt_local.foldenable = false
