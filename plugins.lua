@@ -98,8 +98,21 @@ local plugins = {
     dependencies = { "antosha417/nvim-lsp-file-operations" },
     opts = overrides.nvimtree,
   },
-
   -- Install plugins
+  {
+    "uga-rosa/ccc.nvim",
+    cmd = "CccPick",
+    config = function()
+      require("ccc").setup {
+        -- Your preferred settings
+        -- Example: enable highlighter
+        highlighter = {
+          auto_enable = false,
+          lsp = false,
+        },
+      }
+    end,
+  },
   { "onsails/lspkind.nvim" },
   { "folke/neodev.nvim", opts = {} },
   {
