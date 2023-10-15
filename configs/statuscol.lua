@@ -25,6 +25,15 @@ require("statuscol").setup {
   },
   segments = {
     {
+      sign = {
+        namespace = { "gitsign*" },
+        maxwidth = 1,
+        colwidth = 2,
+      },
+      auto = false,
+      click = "v:lua.ScSa",
+    },
+    {
       text = { builtin.foldfunc, " " },
       click = "v:lua.ScFa",
       condition = { true },
@@ -42,16 +51,6 @@ require("statuscol").setup {
       text = { " ", builtin.lnumfunc, " " },
       click = "v:lua.ScLa",
       condition = { true, builtin.not_empty },
-    },
-    {
-      sign = {
-        namespace = { "gitsign*" },
-        -- name = { ".*" },
-        maxwidth = 1,
-        colwidth = 1,
-      },
-      auto = false,
-      click = "v:lua.ScSa",
     },
     {
       sign = {
