@@ -49,6 +49,7 @@ local global = {
 }
 
 vim.cmd "au TextYankPost * silent! lua vim.highlight.on_yank()"
+vim.cmd "set rtp+=/opt/homebrew/opt/fzf"
 vim.opt.shortmess:append "Ac" -- Disable asking when editing file with swapfile.
 vim.opt.whichwrap:append "<,>,[,],h,l"
 vim.opt.iskeyword:append "-"
