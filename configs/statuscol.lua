@@ -54,6 +54,13 @@ require("statuscol").setup {
       click = "v:lua.ScSa",
     },
     {
+      sign = {
+        name = { ".*" },
+        maxwidth = 1,
+        colwidth = 1,
+      },
+    },
+    {
       text = { " " },
     },
   },
