@@ -2,9 +2,9 @@ local builtin = require "statuscol.builtin"
 require("statuscol").setup {
   relculright = true,
   bt_ignore = {
-    "nofile",
+    -- "nofile",
     "prompt",
-    "temrinal",
+    "terminal",
     "lazy",
   },
   ft_ignore = {
@@ -18,14 +18,10 @@ require("statuscol").setup {
     "dapui_breakpoints",
     "dapui_scopes",
     "help",
-    -- "vim",
-    "alpha",
-    "dashboard",
-    "neo-tree",
+    "vim",
     "Trouble",
     "noice",
     "lazy",
-    "toggleterm",
   },
   segments = {
     {
