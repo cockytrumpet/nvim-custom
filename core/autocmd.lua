@@ -123,23 +123,36 @@ autocmd({ "BufEnter" }, {
     end
   end,
 })
-
+--[[
 -- Reopen NvimTree if it was open before Neogit
 -- FIXME: This doesn't work...
-autocmd({ "BufEnter" }, {
-  pattern = "^Neogit*",
+autocmd({ "BufAdd", "BufEnter" }, { -- try: BufAdd,BufNew, BufWinEnter
   callback = function()
     if vim.g.reopen_nvimtree then
+      local ft = {
+        "NeogitStatus",
+        "NeogitLog",
+        "NeogitCommit",
+        "NeogitConfig",
+        "NeogitBlame",
+        "NeogitCommitView",
+        "NeogitCommitPopup",
+        "NeogitPopup",
+      }
+      if vim.tbl_contains(ft, vim.bo.filetype) then
+        return
+      end
       vim.g.reopen_nvimtree = nil
       local api = require "nvim-tree.api"
       local view = require "nvim-tree.view"
       if not view.is_visible() then
         api.tree.open()
+        vim.cmd "wincmd p"
       end
     end
   end,
 })
-
+]]
 -- Prefetch tabnine
 -- autocmd("BufRead", {
 --   group = augroup("prefetch", { clear = true }),
@@ -202,6 +215,7 @@ autocmd({ "FileType", "BufWinEnter" }, {
       "TelescopePrompt",
       "Trouble",
       "NvimTree",
+      "NvimTree_1",
       "nvcheatsheet",
       "dapui_watches",
       "dap-repl",
@@ -232,6 +246,7 @@ autocmd({ "BufEnter", "BufNew" }, {
       "TelescopePrompt",
       "Trouble",
       "NvimTree",
+      "NvimTree_1",
       "nvcheatsheet",
       "dapui_watches",
       "dap-repl",
