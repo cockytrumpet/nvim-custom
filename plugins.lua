@@ -218,7 +218,6 @@ local plugins = {
     cmd = { "Neogit" },
     setup = function()
       require("neogit").setup {
-        console_timeout = 10000,
         auto_show_console = false,
       }
     end,
@@ -457,6 +456,27 @@ local plugins = {
     event = "BufReadPost",
     config = function()
       require("highlight-undo").setup {}
+    end,
+  },
+  {
+    "kosayoda/nvim-lightbulb",
+    event = "BufWinEnter",
+    config = function()
+      require("nvim-lightbulb").setup {
+        autocmd = { enabled = true },
+        sign = { enabled = false },
+        virtual_text = { enabled = true, text = "💡" },
+        ignore = {
+          -- LSP client names to ignore.
+          -- Example: {"null-ls", "lua_ls"}
+          clients = {},
+          -- Filetypes to ignore.
+          -- Example: {"neo-tree", "lua"}
+          ft = {},
+          -- Ignore code actions without a `kind` like refactor.rewrite, quickfix.
+          actions_without_kind = false,
+        },
+      }
     end,
   },
   {

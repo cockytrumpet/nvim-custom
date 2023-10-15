@@ -26,6 +26,7 @@ M.general = {
   },
 
   n = {
+    ["<leader>ca"] = { "<CMD>CodeActionMenu<CR>", "Code Action menu" },
     ["<Left>"] = { "<CMD>vertical resize -1<CR>", "Vertical +" },
     ["<Right>"] = { "<CMD>vertical resize +1<CR>", "Vertical -" },
     ["<Down>"] = { "<CMD>resize -1<CR>", "Horizontal +" },
