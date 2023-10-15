@@ -111,6 +111,35 @@ autocmd("BufEnter", {
   command = [[if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif]],
 })
 
+-- Close NvimTree if in Neogit
+autocmd({ "BufEnter" }, {
+  pattern = "NeogitStatus",
+  callback = function()
+    local api = require "nvim-tree.api"
+    local view = require "nvim-tree.view"
+    if view.is_visible() then
+      vim.g.reopen_nvimtree = true
+      api.tree.close()
+    end
+  end,
+})
+
+-- Reopen NvimTree if it was open before Neogit
+-- FIXME: This doesn't work...
+autocmd({ "BufEnter" }, {
+  pattern = "^Neogit*",
+  callback = function()
+    if vim.g.reopen_nvimtree then
+      vim.g.reopen_nvimtree = nil
+      local api = require "nvim-tree.api"
+      local view = require "nvim-tree.view"
+      if not view.is_visible() then
+        api.tree.open()
+      end
+    end
+  end,
+})
+
 -- Prefetch tabnine
 -- autocmd("BufRead", {
 --   group = augroup("prefetch", { clear = true }),
