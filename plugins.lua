@@ -233,6 +233,7 @@ local plugins = {
       config.auto_show_console = false
       return config
     end,
+    ft = { "diff" },
     cmd = { "Neogit" },
     setup = function()
       require("neogit").setup {}

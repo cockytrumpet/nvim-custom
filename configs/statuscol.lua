@@ -22,6 +22,7 @@ require("statuscol").setup {
     "Trouble",
     "noice",
     "lazy",
+    "neotest-summary",
   },
   segments = {
     {
