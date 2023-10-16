@@ -228,11 +228,14 @@ local plugins = {
       "ibhagwan/fzf-lua", -- optional
     },
     config = true,
+    opts = function()
+      local config = require "neogit.config"
+      config.auto_show_console = false
+      return config
+    end,
     cmd = { "Neogit" },
     setup = function()
-      require("neogit").setup {
-        auto_show_console = false,
-      }
+      require("neogit").setup {}
     end,
   },
   {
