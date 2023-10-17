@@ -22,6 +22,8 @@ M.treesitter = {
     "diff",
     "sql",
     "bash",
+    "regex",
+    "ocaml",
   },
   sync_install = false,
   auto_install = true,

@@ -18,7 +18,8 @@ local on_attach = function(client, bufnr)
   if client.server_capabilities.inlayHintProvider then
     vim.lsp.inlay_hint(bufnr, true)
   end
-  if client.supports_method "textDocument/codeLens" then
+  if client.server_capabilities.code_lens then
+    -- if client.supports_method "textDocument/codeLens" then
     local codelens = vim.api.nvim_create_augroup("LSPCodeLens", { clear = true })
     vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "CursorHold" }, {
       group = codelens,

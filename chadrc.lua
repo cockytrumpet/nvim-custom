@@ -15,7 +15,7 @@ M.ui = {
   },
 
   theme = "catppuccin",
-  theme_toggle = { "onenord", "catppuccin" },
+  theme_toggle = { "tokyonight", "catppuccin" },
   lsp_semantic_tokens = false,
   hl_override = highlights.override,
   hl_add = highlights.add,
