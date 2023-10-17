@@ -3,7 +3,9 @@ require("neodev").setup {
 }
 
 local c = require("plugins.configs.lspconfig").capabilities
+---@diagnostic disable-next-line: inject-field
 c.textDocument.completion.completionItem.snippetSupport = true
+---@diagnostic disable-next-line: inject-field
 c.textDocument.completion.completionItem.resolveSupport = {
   properties = {
     "documentation",
@@ -12,6 +14,20 @@ c.textDocument.completion.completionItem.resolveSupport = {
   },
 }
 local capabilities = require("cmp_nvim_lsp").default_capabilities(c)
+
+local present, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+if present then
+  capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
+end
+
+local present2, _ = pcall(require, "ufo")
+if present2 then
+  capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true,
+  }
+end
+
 local on_attach = function(client, bufnr)
   if client.server_capabilities.inlayHintProvider then
     vim.lsp.inlay_hint(bufnr, true)
@@ -30,6 +46,7 @@ local on_attach = function(client, bufnr)
   return require("plugins.configs.lspconfig").on_attach
 end
 
+---@diagnostic disable-next-line: different-requires
 local lspconfig = require "lspconfig"
 
 -- if you just want default config for the servers then put them in a table
@@ -117,6 +134,7 @@ metals_config.settings = {
 -- Example if you are using cmp how to make sure the correct capabilities for snippets are set
 metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
+---@diagnostic disable-next-line: unused-local
 metals_config.on_attach = function(client, bufnr)
   require("metals").setup_dap()
 end
@@ -133,3 +151,20 @@ api.nvim_create_autocmd("FileType", {
   end,
   group = nvim_metals_group,
 })
+
+vim.diagnostic.config {
+  virtual_lines = false,
+  virtual_text = {
+    source = "always",
+    prefix = "■",
+  },
+  -- virtual_text = false,
+  float = {
+    source = "always",
+    border = "rounded",
+  },
+  signs = true,
+  underline = false,
+  update_in_insert = false,
+  severity_sort = true,
+}
