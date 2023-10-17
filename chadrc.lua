@@ -46,7 +46,6 @@ M.ui = {
   },
 }
 
----@diagnostic disable-next-line: inject-field
 M.settings = {
   -- cc_size = "130",
   so_size = 10,

@@ -285,7 +285,6 @@ M.telescope = {
         folder_open = "",
       }, ]]
     },
-    metals = {},
   },
 }
 
