@@ -17,7 +17,6 @@ local cmp_opt = require "custom.configs.cmp"
 
 ---@type NvPluginSpec[]
 local plugins = {
-  -- Override plugin definition options
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -25,8 +24,6 @@ local plugins = {
       require "custom.configs.lspconfig"
     end,
   },
-
-  -- override plugin configs
   {
     "williamboman/mason.nvim",
     dependencies = {
@@ -85,12 +82,6 @@ local plugins = {
           timeout_ms = 4000,
         },
       }
-
-      --[[ require("conform.formatters.scalafmt").args = {
-        "--stdin",
-        "--stdout",
-        "--non-interactive",
-      } ]]
     end,
   },
   {
@@ -98,14 +89,11 @@ local plugins = {
     dependencies = { "antosha417/nvim-lsp-file-operations" },
     opts = overrides.nvimtree,
   },
-  -- Install plugins
   {
     "uga-rosa/ccc.nvim",
     cmd = "CccPick",
     config = function()
       require("ccc").setup {
-        -- Your preferred settings
-        -- Example: enable highlighter
         highlighter = {
           auto_enable = false,
           lsp = false,
@@ -124,7 +112,6 @@ local plugins = {
     event = { "InsertEnter", "CmdlineEnter" },
     branch = "v0.6", --recomended as each new version will have breaking changes
     opts = {
-      --Config goes here
       tabout = {
         enable = true,
         hopout = true,
@@ -153,10 +140,6 @@ local plugins = {
           },
         },
       }
-      --[[
-      vim.wo.foldlevel = 99
-      vim.wo.conceallevel = 2
-]]
     end,
   },
   {
@@ -166,9 +149,7 @@ local plugins = {
   {
     "NStefan002/speedtyper.nvim",
     cmd = "Speedtyper",
-    opts = {
-      -- your config
-    },
+    opts = {},
   },
   {
     "max397574/better-escape.nvim",
@@ -183,11 +164,8 @@ local plugins = {
   },
   {
     "folke/noice.nvim",
-    -- event = "VeryLazy",
     lazy = false,
-    opts = {
-      -- add any options here
-    },
+    opts = {},
     dependencies = {
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",
@@ -208,7 +186,6 @@ local plugins = {
     },
     config = function()
       require("core.utils").load_mappings "lspconfig"
-      -- require("telescope").extensions.metals.commands()
     end,
   },
   {
@@ -269,35 +246,6 @@ local plugins = {
       require("chatgpt").setup {}
     end,
   },
-  --[[ {
-    "m4xshen/hardtime.nvim",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-    },
-    event = "VimEnter",
-    cmd = { "Hardtime" },
-    opts = {
-      enabled = true,
-      disable_mouse = false,
-      restricted_mode = "hint",
-      disabled_filetypes = {
-        "qf",
-        "netrw",
-        "NvimTree",
-        "lazy",
-        "mason",
-        "oil",
-        "nvterm",
-        "term",
-        "query",
-        "help",
-        "NeogitStatus",
-        "NeogitPopup",
-        "NeogitLogView",
-      },
-    },
-  }, ]]
   {
     "olimorris/persisted.nvim",
     event = "VimEnter",
@@ -434,7 +382,6 @@ local plugins = {
   },
   {
     "gorbit99/codewindow.nvim",
-    -- keys = { "<leader>mm" },
     config = function()
       require("codewindow").setup {
         show_cursor = false,
@@ -840,11 +787,6 @@ local plugins = {
       "saadparwaiz1/cmp_luasnip",
       "onsails/lspkind-nvim",
       "hrsh7th/cmp-copilot",
-      --[[ {
-        "zbirenbaum/copilot-cmp",
-        event = { "InsertEnter", "LspAttach" },
-        fix_pairs = true,
-      }, ]]
       "ray-x/cmp-treesitter",
       "nvim-treesitter/nvim-treesitter-textobjects",
       "chrisgrieser/nvim-various-textobjs",
@@ -929,11 +871,9 @@ local plugins = {
         end
         return format_kinds(entry, item)
       end
-      -- table.insert(opts.sources, { name = "codeium" })
       require("cmp").setup(opts)
     end,
   },
-  -- "onsails/lspkind-nvim",
   {
     "kevinhwang91/nvim-ufo",
     dependencies = {

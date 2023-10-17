@@ -1,3 +1,4 @@
+---@diagnostic disable: deprecated
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local settings = require("custom.chadrc").settings
@@ -15,7 +16,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
     local filetypes_to_close = { "minimap", "NvimTree", "Trouble", "OUTLINE" }
     for _, filetype in ipairs(filetypes_to_close) do
       local cmd = "bw " .. filetype
-      pcall(vim.cmd, cmd)
+      pcall(vim.cmd(cmd))
     end
   end,
 })
@@ -237,7 +238,7 @@ autocmd({ "FileType", "BufWinEnter" }, {
 })
 
 autocmd({ "BufEnter", "BufNew" }, {
-  callback = function(ev)
+  callback = function()
     local ft_ignore = {
       "man",
       "help",
@@ -317,7 +318,8 @@ autocmd({ "BufEnter" }, {
 autocmd({ "BufReadPost" }, {
   pattern = { "*" },
   callback = function()
-    vim.api.nvim_exec('silent! normal! g`"zv', false)
+    -- vim.api.nvim_exec('silent! normal! g`"zv', false)
+    vim.cmd [[silent! normal! g`"zv]]
   end,
 })
 
@@ -502,7 +504,7 @@ local attach_to_buffer = function(bufnr, command)
     local line = vim.fn.line "." - 1
     for _, test in pairs(state.tests) do
       if test.line_number == line then
-        vim.notify(test.message, "error", {
+        vim.notify(test.message, vim.log.levels.ERROR, {
           title = test.nodeid,
           on_open = function(win)
             local buf = vim.api.nvim_win_get_buf(win)
@@ -566,13 +568,17 @@ local attach_to_buffer = function(bufnr, command)
           end
           vim.diagnostic.set(ns, bufnr, failed, {})
           if state.summary.total == state.summary.passed then
-            vim.notify("All tests passed", "info", {
+            vim.notify("All tests passed", vim.log.levels.INFO, {
               title = state.summary.total .. " tests completed",
             })
           else
-            vim.notify("Passed: " .. state.summary.passed .. "\nFailed: " .. state.summary.failed, "warn", {
-              title = state.summary.total .. " tests completed",
-            })
+            vim.notify(
+              "Passed: " .. state.summary.passed .. "\nFailed: " .. state.summary.failed,
+              vim.log.levels.WARN,
+              {
+                title = state.summary.total .. " tests completed",
+              }
+            )
           end
         end,
       })

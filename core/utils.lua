@@ -16,6 +16,7 @@ local function substitute(cmd)
   cmd = cmd:gsub("$dir", vim.fn.expand "%:p:h")
   cmd = cmd:gsub(
     "$moduleName",
+    ---@diagnostic disable-next-line: param-type-mismatch
     vim.fn.substitute(vim.fn.substitute(vim.fn.fnamemodify(vim.fn.expand "%:r", ":~:."), "/", ".", "g"), "\\", ".", "g")
   )
   cmd = cmd:gsub("#", vim.fn.expand "#")

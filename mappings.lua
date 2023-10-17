@@ -88,6 +88,7 @@ M.general = {
     ["<leader>K"] = { "<cmd> TestLineDiag <CR>", "pytest line diagnostics" },
     ["<leader>rf"] = {
       function()
+        ---@diagnostic disable-next-line: undefined-field
         _G.run_code()
       end,
       "run file",
