@@ -117,7 +117,12 @@ local plugins = {
   },
   {
     "nvim-tree/nvim-tree.lua",
-    dependencies = { "antosha417/nvim-lsp-file-operations" },
+    dependencies = {
+      "antosha417/nvim-lsp-file-operations",
+      config = function()
+        require("lsp-file-operations").setup()
+      end,
+    },
     opts = overrides.nvimtree,
   },
   -- Install plugins
@@ -367,6 +372,7 @@ local plugins = {
         reset_prompt_after_deletion = true, -- whether to reset prompt after session deleted
       },
       config = function()
+        ---@diagnostic disable-next-line: undefined-global
         require("persisted").setup(opts)
         require("telescope").load_extension "persisted"
       end,
@@ -544,6 +550,14 @@ local plugins = {
     end,
   },
   {
+    "lvimuser/lsp-inlayhints.nvim",
+    branch = "anticonceal",
+    event = "LspAttach",
+    config = function()
+      require "custom.configs.inlayhints"
+    end,
+  },
+  {
     "weilbith/nvim-code-action-menu",
     cmd = "CodeActionMenu",
     init = function()
@@ -553,6 +567,7 @@ local plugins = {
     end,
     config = function()
       dofile(vim.g.base46_cache .. "git")
+      dofile(vim.g.base46_cache .. "codeactionmenu")
     end,
   },
   {

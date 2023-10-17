@@ -4,7 +4,7 @@ local settings = require("custom.chadrc").settings
 
 -- General Settings
 local general = augroup("General Settings", { clear = true })
---[[
+
 local persisted_group = vim.api.nvim_create_augroup("PersistedHooks", {})
 
 -- Don't let some things get persisted
@@ -38,7 +38,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
     vim.api.nvim_input "<ESC>:%bd!<CR>"
   end,
 })
-]]
+
 -- disable folds in these filetypes
 vim.api.nvim_create_autocmd("FileType", {
   pattern = {
@@ -90,33 +90,46 @@ autocmd("VimResized", {
 --   end,
 -- })
 
+-- Nvimtree open file on creation
+autocmd({ "VimEnter" }, {
+  callback = function()
+    require("nvim-tree.api").events.subscribe("FileCreated", function(file)
+      vim.cmd("edit " .. file.fname)
+    end)
+  end,
+})
+
 -- Open new buffer if only Nvimtree is open
--- autocmd("BufEnter", {
---   nested = true,
+autocmd("BufEnter", {
+  nested = true,
+  callback = function()
+    local api = require "nvim-tree.api"
+    if #vim.api.nvim_list_wins() == 1 and api.tree.is_tree_buf() then
+      vim.defer_fn(function()
+        api.tree.toggle { find_file = true, focus = true }
+        vim.cmd "wincmd p"
+      end, 0)
+    end
+  end,
+})
+
+-- Open NvimTree on startup
+-- autocmd("VimEnter", {
 --   callback = function()
 --     local api = require "nvim-tree.api"
---     if #vim.api.nvim_list_wins() == 1 and api.tree.is_tree_buf() then
---       vim.defer_fn(function()
---         api.tree.toggle { find_file = true, focus = true }
---         api.tree.toggle { find_file = true, focus = true }
---         vim.cmd "wincmd p"
---       end, 0)
+--     local view = require "nvim-tree.view"
+--     if not view.is_visible() then
+--       api.tree.toggle { find_file = true, focus = false }
+--       -- require("nvim-tree.api").tree.open()
 --     end
 --   end,
 -- })
-
--- Open NvimTree on startup
-autocmd("VimEnter", {
-  callback = function()
-    require("nvim-tree.api").tree.open()
-  end,
-})
 
 -- Close nvim if NvimTree is only running buffer
 -- autocmd("BufEnter", {
 --   command = [[if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif]],
 -- })
-
+--[[
 -- Close NvimTree if in Neogit
 autocmd({ "BufEnter" }, {
   pattern = "Neogit*",
@@ -156,7 +169,7 @@ autocmd({ "TabClosed" }, {
     end
   end,
 })
-
+]]
 -- Prefetch tabnine
 -- autocmd("BufRead", {
 --   group = augroup("prefetch", { clear = true }),
@@ -170,7 +183,7 @@ autocmd({ "TabClosed" }, {
 autocmd("BufEnter", {
   command = [[set formatoptions-=cro]],
 })
-
+--[[
 -- Go to last loc when opening a buffer
 autocmd("BufReadPost", {
   callback = function()
@@ -181,7 +194,7 @@ autocmd("BufReadPost", {
     end
   end,
 })
-
+]]
 -- Git conflict popup
 -- autocmd("User", {
 --   pattern = "GitConflictDetected",
@@ -282,7 +295,7 @@ autocmd({ "BufEnter" }, {
 autocmd({ "BufReadPost" }, {
   pattern = { "*" },
   callback = function()
-    vim.api.nvim_exec('silent! normal! g`"zv', false)
+    vim.cmd 'silent! normal! g`"zv'
   end,
 })
 
@@ -317,15 +330,6 @@ autocmd("FileType", {
 --   pattern = "*/node_modules/*",
 --   command = "lua vim.diagnostic.disable(0)",
 -- })
-
--- Nvimtree open file on creation
-autocmd({ "VimEnter" }, {
-  callback = function()
-    require("nvim-tree.api").events.subscribe("FileCreated", function(file)
-      vim.cmd("edit " .. file.fname)
-    end)
-  end,
-})
 
 -- Go exclusive mappings
 -- autocmd("FileType", {

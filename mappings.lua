@@ -190,6 +190,16 @@ M.terminal = {
   },
 }
 ]]
+M.gitsigns = {
+  n = {
+    ["<leader>gd"] = {
+      function()
+        require("gitsigns").toggle_deleted()
+      end,
+      "Toggle deleted",
+    },
+  },
+}
 
 M.nvimtree = {
   plugin = true,

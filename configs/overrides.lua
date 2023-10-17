@@ -186,7 +186,7 @@ M.nvimtree = {
   git = {
     enable = true,
   },
-
+  filters = { custom = { "^.git$" } },
   renderer = {
     highlight_git = true,
     icons = {
@@ -197,14 +197,15 @@ M.nvimtree = {
   },
   view = {
     side = "left",
+    width = { min = 10, padding = 2 },
   },
   hijack_unnamed_buffer_when_opening = true,
   hijack_cursor = true,
   sync_root_with_cwd = true,
   tab = {
     sync = {
-      open = true,
-      close = true,
+      open = false,
+      close = false,
     },
   },
 }
@@ -241,6 +242,8 @@ M.telescope = {
     "lazygit",
     "fzf",
     "file_browser",
+    "metals",
+    "persisted",
   },
   extensions = {
     fzf = {

@@ -28,8 +28,10 @@ require("statuscol").setup {
     {
       sign = {
         namespace = { "gitsign*" },
-        maxwidth = 1,
+        name = { ".*" },
+        maxwidth = 2,
         colwidth = 2,
+        wrap = true,
       },
       auto = false,
       click = "v:lua.ScSa",
@@ -45,6 +47,7 @@ require("statuscol").setup {
         maxwidth = 1,
         colwidth = 2,
         auto = false,
+        wrap = true,
       },
       click = "v:lua.ScSa",
     },
@@ -53,7 +56,7 @@ require("statuscol").setup {
       click = "v:lua.ScLa",
       condition = { true, builtin.not_empty },
     },
-    {
+    --[[ {
       sign = {
         name = { ".*" },
         maxwidth = 1,
@@ -62,6 +65,6 @@ require("statuscol").setup {
     },
     {
       text = { " " },
-    },
+    }, ]]
   },
 }
