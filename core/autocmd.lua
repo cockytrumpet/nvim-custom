@@ -12,7 +12,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
   pattern = "PersistedSavePre",
   group = persisted_group,
   callback = function()
-    local filetypes_to_close = { "minimap", "NvimTree", "Trouble", "OUTLINE" }
+    local filetypes_to_close = { "minimap", "NvimTree*", "Trouble", "OUTLINE" }
     for _, filetype in ipairs(filetypes_to_close) do
       local cmd = "bw " .. filetype
       pcall(vim.cmd, cmd)
@@ -20,7 +20,6 @@ vim.api.nvim_create_autocmd({ "User" }, {
   end,
 })
 
---[[
 vim.api.nvim_create_autocmd({ "User" }, {
   pattern = "PersistedLoadPost",
   group = persisted_group,
@@ -31,7 +30,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
     end)
   end,
 })
-]]
+
 vim.api.nvim_create_autocmd({ "User" }, {
   pattern = "PersistedTelescopeLoadPre",
   group = persisted_group,
@@ -79,32 +78,32 @@ autocmd("VimResized", {
 -- })
 
 -- Close Nvimtree before quit nvim
-autocmd("FileType", {
-  pattern = { "NvimTree*" },
-  callback = function(args)
-    autocmd("VimLeavePre", {
-      callback = function()
-        vim.api.nvim_buf_delete(args.buf, { force = true })
-        return true
-      end,
-    })
-  end,
-})
+-- autocmd("FileType", {
+--   pattern = { "NvimTree*" },
+--   callback = function(args)
+--     autocmd("VimLeavePre", {
+--       callback = function()
+--         vim.api.nvim_buf_delete(args.buf, { force = true })
+--         return true
+--       end,
+--     })
+--   end,
+-- })
 
 -- Open new buffer if only Nvimtree is open
-autocmd("BufEnter", {
-  nested = true,
-  callback = function()
-    local api = require "nvim-tree.api"
-    if #vim.api.nvim_list_wins() == 1 and api.tree.is_tree_buf() then
-      vim.defer_fn(function()
-        api.tree.toggle { find_file = true, focus = true }
-        api.tree.toggle { find_file = true, focus = true }
-        vim.cmd "wincmd p"
-      end, 0)
-    end
-  end,
-})
+-- autocmd("BufEnter", {
+--   nested = true,
+--   callback = function()
+--     local api = require "nvim-tree.api"
+--     if #vim.api.nvim_list_wins() == 1 and api.tree.is_tree_buf() then
+--       vim.defer_fn(function()
+--         api.tree.toggle { find_file = true, focus = true }
+--         api.tree.toggle { find_file = true, focus = true }
+--         vim.cmd "wincmd p"
+--       end, 0)
+--     end
+--   end,
+-- })
 
 -- Close nvim if NvimTree is only running buffer
 autocmd("BufEnter", {
@@ -113,7 +112,7 @@ autocmd("BufEnter", {
 
 -- Close NvimTree if in Neogit
 autocmd({ "BufEnter" }, {
-  pattern = "NeogitStatus",
+  pattern = "Neogit*",
   callback = function()
     local api = require "nvim-tree.api"
     local view = require "nvim-tree.view"
@@ -123,10 +122,9 @@ autocmd({ "BufEnter" }, {
     end
   end,
 })
---[[
+
 -- Reopen NvimTree if it was open before Neogit
--- FIXME: This doesn't work...
-autocmd({ "BufAdd", "BufEnter" }, { -- try: BufAdd,BufNew, BufWinEnter
+autocmd({ "TabClosed" }, {
   callback = function()
     if vim.g.reopen_nvimtree then
       local ft = {
@@ -139,20 +137,20 @@ autocmd({ "BufAdd", "BufEnter" }, { -- try: BufAdd,BufNew, BufWinEnter
         "NeogitCommitPopup",
         "NeogitPopup",
       }
-      if vim.tbl_contains(ft, vim.bo.filetype) then
+      if vim.tbl_contains(ft, vim.g.filetype) then
         return
       end
       vim.g.reopen_nvimtree = nil
       local api = require "nvim-tree.api"
       local view = require "nvim-tree.view"
       if not view.is_visible() then
-        api.tree.open()
-        vim.cmd "wincmd p"
+        api.tree.toggle { find_file = true, focus = false }
+        -- api.tree.open()
       end
     end
   end,
 })
-]]
+
 -- Prefetch tabnine
 -- autocmd("BufRead", {
 --   group = augroup("prefetch", { clear = true }),
@@ -339,6 +337,7 @@ autocmd("FileType", {
     "neotest-summary",
     "neotest-output-panel",
     "fugitive",
+    -- "Neogit*",
   },
   command = [[
             nnoremap <buffer><silent> q :close<CR>
