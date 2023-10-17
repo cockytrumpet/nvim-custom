@@ -40,6 +40,7 @@ local options = {
   foldcolumn = "0",
   ruler = false,
   textwidth = 80,
+  sessionoptions = "buffers,curdir,folds,globals,tabpages,winpos,winsize",
 }
 
 local global = {

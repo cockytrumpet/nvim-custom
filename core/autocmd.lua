@@ -4,7 +4,7 @@ local settings = require("custom.chadrc").settings
 
 -- General Settings
 local general = augroup("General Settings", { clear = true })
-
+--[[
 local persisted_group = vim.api.nvim_create_augroup("PersistedHooks", {})
 
 -- Don't let some things get persisted
@@ -38,7 +38,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
     vim.api.nvim_input "<ESC>:%bd!<CR>"
   end,
 })
-
+]]
 -- disable folds in these filetypes
 vim.api.nvim_create_autocmd("FileType", {
   pattern = {
@@ -105,10 +105,17 @@ autocmd("VimResized", {
 --   end,
 -- })
 
--- Close nvim if NvimTree is only running buffer
-autocmd("BufEnter", {
-  command = [[if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif]],
+-- Open NvimTree on startup
+autocmd("VimEnter", {
+  callback = function()
+    require("nvim-tree.api").tree.open()
+  end,
 })
+
+-- Close nvim if NvimTree is only running buffer
+-- autocmd("BufEnter", {
+--   command = [[if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif]],
+-- })
 
 -- Close NvimTree if in Neogit
 autocmd({ "BufEnter" }, {
@@ -144,8 +151,7 @@ autocmd({ "TabClosed" }, {
       local api = require "nvim-tree.api"
       local view = require "nvim-tree.view"
       if not view.is_visible() then
-        api.tree.toggle { find_file = true, focus = false }
-        -- api.tree.open()
+        api.tree.toggle { find_file = true, focus = true }
       end
     end
   end,
@@ -203,37 +209,6 @@ autocmd("BufReadPost", {
 -- })
 
 -- Disable status column in the following files
-autocmd({ "FileType", "BufWinEnter" }, {
-  callback = function()
-    local ft_ignore = {
-      "man",
-      "help",
-      "neo-tree",
-      "starter",
-      "TelescopePrompt",
-      "Trouble",
-      "NvimTree",
-      "NvimTree_1",
-      "nvcheatsheet",
-      "dapui_watches",
-      "dap-repl",
-      "dapui_console",
-      "dapui_stacks",
-      "dapui_breakpoints",
-      "dapui_scopes",
-    }
-
-    local b = vim.api.nvim_get_current_buf()
-    local f = vim.api.nvim_buf_get_option(b, "filetype")
-    for _, e in ipairs(ft_ignore) do
-      if f == e then
-        vim.api.nvim_win_set_option(0, "statuscolumn", "")
-        return
-      end
-    end
-  end,
-})
-
 autocmd({ "BufEnter", "BufNew" }, {
   callback = function(ev)
     local ft_ignore = {
@@ -257,6 +232,7 @@ autocmd({ "BufEnter", "BufNew" }, {
 
     if vim.tbl_contains(ft_ignore, vim.bo.filetype) then
       vim.cmd "setlocal statuscolumn="
+      vim.o.scrolloff = 0
     end
   end,
 })
@@ -278,16 +254,16 @@ autocmd("TextYankPost", {
 })
 
 -- Show cursor line only in active window
--- autocmd({ "InsertLeave", "WinEnter" }, {
---   pattern = "*",
---   command = "set cursorline",
---   group = augroup("CursorLine", { clear = true }),
--- })
--- autocmd({ "InsertEnter", "WinLeave" }, {
---   pattern = "*",
---   command = "set nocursorline",
---   group = augroup("CursorLine", { clear = true }),
--- })
+autocmd({ "InsertLeave", "WinEnter" }, {
+  pattern = "*",
+  command = "set cursorline",
+  group = augroup("CursorLine", { clear = true }),
+})
+autocmd({ "InsertEnter", "WinLeave" }, {
+  pattern = "*",
+  command = "set nocursorline",
+  group = augroup("CursorLine", { clear = true }),
+})
 
 --- Remove all trailing whitespace on save
 autocmd("BufWritePre", {
@@ -295,22 +271,13 @@ autocmd("BufWritePre", {
   group = augroup("TrimWhiteSpaceGrp", { clear = true }),
 })
 --[[
--- Disable colorcolumn in blacklisted filetypes
-autocmd({ "FileType" }, {
-  callback = function()
-    if vim.g.ccenable then
-      vim.opt_local.cc = (vim.tbl_contains(settings.blacklist, vim.bo.ft) and "0" or settings.cc_size)
-    end
-  end,
-})
-]]
 -- Disable scrolloff in blacklisted filetypes
 autocmd({ "BufEnter" }, {
   callback = function()
     vim.o.scrolloff = (vim.tbl_contains(settings.blacklist, vim.bo.ft) and 0 or settings.so_size)
   end,
 })
-
+]]
 -- Restore cursor
 autocmd({ "BufReadPost" }, {
   pattern = { "*" },
@@ -352,25 +319,11 @@ autocmd("FileType", {
 -- })
 
 -- Nvimtree open file on creation
-local function open_file_created()
-  require("nvim-tree.api").events.subscribe("FileCreated", function(file)
-    vim.cmd("edit " .. file.fname)
-  end)
-end
-
 autocmd({ "VimEnter" }, {
-  callback = open_file_created,
-})
-
-autocmd({ "ModeChanged" }, {
-  pattern = { "s:n", "i:*" },
   callback = function()
-    if
-      require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
-      and not require("luasnip").session.jump_active
-    then
-      require("luasnip").unlink_current()
-    end
+    require("nvim-tree.api").events.subscribe("FileCreated", function(file)
+      vim.cmd("edit " .. file.fname)
+    end)
   end,
 })
 
@@ -400,6 +353,14 @@ autocmd("TermOpen", {
   group = general,
   desc = "Terminal Options",
 })
+
+--[[
+vim.api.nvim_create_autocmd("TermOpen", {
+  callback = function()
+    vim.cmd.set "filetype=term"
+  end,
+})
+]]
 
 -- Unlink the snippet and restore completion
 -- https://github.com/L3MON4D3/LuaSnip/issues/258#issuecomment-1011938524
@@ -444,21 +405,6 @@ autocmd("BufWritePost", {
     require("base46").load_all_highlights()
   end,
 })
-
--- Open NvimTree on startup
--- autocmd("VimEnter", {
---   callback = function()
---     require("nvim-tree.api").tree.open()
---   end,
--- })
-
--- Auto format on save, but it will mess with undo history
--- autocmd("BufWritePre", {
---   pattern = { "*.js", "*.java", "*.lua" },
---   callback = function()
---     vim.lsp.buf.format { async = false }
---   end,
--- })
 
 ------------------ pytest TestOnSave ------------------
 
@@ -583,9 +529,3 @@ vim.api.nvim_create_user_command("TestOnSave", function()
   attach_to_buffer(vim.api.nvim_get_current_buf(), cmd)
 end, {})
 --------------------------- end ---------------------------
-
-vim.api.nvim_create_autocmd("TermOpen", {
-  callback = function()
-    vim.cmd.set "filetype=term"
-  end,
-})
