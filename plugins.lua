@@ -611,6 +611,7 @@ local plugins = {
   -- - Select a virtual environment with `:VenvSelect`
   {
     "linux-cultist/venv-selector.nvim",
+    enabled = false,
     event = "BufReadPre",
     dependencies = {
       "neovim/nvim-lspconfig",
