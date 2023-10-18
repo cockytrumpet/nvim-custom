@@ -120,7 +120,7 @@ metals_config.settings = {
   excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
   showInferredType = true,
   superMethodLensesEnabled = true,
-  enableSemanticHighlighting = true,
+  enableSemanticHighlighting = false,
   showImplicitConversionsAndClasses = true,
 }
 
