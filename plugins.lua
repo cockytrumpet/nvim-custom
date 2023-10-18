@@ -619,6 +619,7 @@ local plugins = {
     },
     opts = {
       dap_enabled = true, -- makes the debugger work with venv
+      pyenv_path = "/Users/adam/.pyenv/versions",
     },
   },
   {
