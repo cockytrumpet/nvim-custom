@@ -20,10 +20,17 @@ vim.keymap.set("n", "<leader>zz", function()
     },
     plugins = {
       options = {
-        showcmd = true,
+        enabled = true,
+        showcmd = false,
       },
       -- twilight = { enabled = false },
       gitsigns = { enabled = true },
+      wezterm = {
+        enabled = true,
+        -- can be either an absolute font size or the number of incremental steps
+        font = "+2", -- (10% increase per step)
+      },
+      tmux = { enabled = true },
     },
   }
   require("zen-mode").toggle()

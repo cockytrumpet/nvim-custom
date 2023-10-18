@@ -14,7 +14,7 @@ M.ui = {
     overriden_modules = nil,
   },
 
-  theme = "catppuccin",
+  theme = "tokyonight",
   theme_toggle = { "tokyonight", "catppuccin" },
   lsp_semantic_tokens = false,
   hl_override = highlights.override,
