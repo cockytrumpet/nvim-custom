@@ -87,14 +87,14 @@ lspconfig.pyright.setup {
         typeCheckingMode = "basic",
         autoSearchPaths = true,
         useLibraryCodeForTypes = true,
-        diagnosticMode = "workspace",
+        diagnosticMode = "openFilesOnly",
       },
       pyright = {
         autoImportCompletion = true,
       },
     },
   },
-  -- single_file = true,
+  single_file = true,
 }
 
 lspconfig.ruff_lsp.setup {
