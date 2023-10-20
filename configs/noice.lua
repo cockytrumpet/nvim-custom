@@ -107,7 +107,7 @@ noice.setup {
   },
   lsp = {
     progress = {
-      enabled = false,
+      enabled = true,
     },
     signature = {
       enabled = true,
