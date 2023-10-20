@@ -49,6 +49,10 @@ local global = {
   -- python_recommended_style = 0, -- Disable python indentation
 }
 
+if vim.fn.has "nvim-0.10" == 1 then
+  vim.opt.smoothscroll = true
+end
+
 vim.cmd "au TextYankPost * silent! lua vim.highlight.on_yank()"
 vim.cmd "set rtp+=/opt/homebrew/opt/fzf"
 vim.opt.shortmess:append "Ac" -- Disable asking when editing file with swapfile.
