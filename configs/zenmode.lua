@@ -22,6 +22,7 @@ vim.keymap.set("n", "<leader>zz", function()
       options = {
         enabled = true,
         showcmd = false,
+        laststatus = 0,
       },
       -- twilight = { enabled = false },
       gitsigns = { enabled = true },
