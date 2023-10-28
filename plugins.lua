@@ -150,9 +150,8 @@ local plugins = {
         exclude = {}, -- tabout will ignore these filetypes
       }
     end,
-    dependencies = { "nvim-treesitter" }, -- or require if not used so far
+    dependencies = { "nvim-treesitter", "nvim-cmp" }, -- or require if not used so far
     event = "InsertEnter",
-    after = { "nvim-cmp" }, -- if a completion plugin is using tabs load it before
   },
   {
     "uga-rosa/ccc.nvim",
@@ -297,9 +296,9 @@ local plugins = {
     end,
     ft = { "diff" },
     cmd = { "Neogit" },
-    setup = function()
+    --[[ setup = function()
       require("neogit").setup {}
-    end,
+    end, ]]
   },
   {
     "kdheepak/lazygit.nvim",
