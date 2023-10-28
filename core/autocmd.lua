@@ -265,7 +265,7 @@ autocmd("TextYankPost", {
   command = "silent! lua vim.highlight.on_yank({higroup='YankVisual', timeout=500})",
   group = augroup("YankHighlight", { clear = true }),
 })
-
+--[[
 -- Show cursor line only in active window
 autocmd({ "InsertLeave", "WinEnter" }, {
   pattern = "*",
@@ -277,7 +277,7 @@ autocmd({ "InsertEnter", "WinLeave" }, {
   command = "set nocursorline",
   group = augroup("CursorLine", { clear = true }),
 })
-
+]]
 --- Remove all trailing whitespace on save
 autocmd("BufWritePre", {
   command = [[:%s/\s\+$//e]],

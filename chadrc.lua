@@ -45,7 +45,7 @@ M.ui = {
     "notify",
   },
 }
-
+--[[
 M.settings = {
   -- cc_size = "130",
   so_size = 10,
@@ -60,7 +60,7 @@ M.settings = {
     "help",
   },
 }
-
+]]
 M.lazy_nvim = require "configs.lazy_nvim" -- config for lazy.nvim startup options
 M.plugins = "custom.plugins"
 M.mappings = require "custom.mappings"
