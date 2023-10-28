@@ -168,3 +168,6 @@ vim.diagnostic.config {
   update_in_insert = false,
   severity_sort = true,
 }
+
+vim.lsp.handlers["textDocument/hover"] = require("noice").hover
+vim.lsp.handlers["textDocument/signatureHelp"] = require("noice").signature
