@@ -185,10 +185,26 @@ M.mason = {
 M.nvimtree = {
   git = {
     enable = true,
+    show_on_dirs = true,
+    show_on_open_dirs = false,
+  },
+  diagnostics = {
+    enable = true,
+    show_on_dirs = true,
+    show_on_open_dirs = false,
+  },
+  modified = {
+    enable = true,
+    show_on_dirs = true,
+    show_on_open_dirs = false,
   },
   filters = { custom = { "^.git$" } },
   renderer = {
     highlight_git = true,
+    highlight_diagnostics = true,
+    highlight_opened_files = "icon",
+    highlight_modified = "none",
+    highlight_bookmarks = "all",
     icons = {
       show = {
         git = true,

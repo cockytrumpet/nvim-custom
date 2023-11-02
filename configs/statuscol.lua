@@ -56,15 +56,5 @@ require("statuscol").setup {
       click = "v:lua.ScLa",
       condition = { true, builtin.not_empty },
     },
-    --[[ {
-      sign = {
-        name = { ".*" },
-        maxwidth = 1,
-        colwidth = 1,
-      },
-    },
-    {
-      text = { " " },
-    }, ]]
   },
 }

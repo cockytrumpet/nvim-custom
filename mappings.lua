@@ -323,6 +323,7 @@ M.telescope = {
     ["<leader>fi"] = { "<CMD>Telescope highlights<CR>", "Highlights" },
     ["<leader>fk"] = { "<CMD>Telescope keymaps<CR>", " Find keymaps" },
     ["<leader>fs"] = { "<CMD>Telescope lsp_document_symbols<CR>", " Find document symbols" },
+    ["<leader>fS"] = { "<CMD>Telescope luasnip<CR>", " Find snippets" },
     ["<leader>fr"] = { "<CMD>Telescope frecency<CR>", " Recent files" },
     ["<leader>fu"] = { "<CMD>Telescope undo<CR>", " Undo tree" },
     ["<leader>fa"] = { ":Telescope autocommands<cr>", "Autocommmands", opts = { silent = true } },

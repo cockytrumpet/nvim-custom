@@ -92,7 +92,7 @@ local plugins = {
           html = { "prettier" },
           json = { "prettier" },
           yaml = { "prettier" },
-          markdown = { "prettier" },
+          markdown = { "prettier", "injected" },
           graphql = { "prettier" },
           lua = { "stylua" },
           python = { "isort", "black" },
@@ -514,6 +514,10 @@ local plugins = {
         autocmd = { enabled = true },
         sign = { enabled = false },
         virtual_text = { enabled = true, text = "💡" },
+        action_kinds = {
+          "quickfix",
+          "refactor",
+        },
         ignore = {
           -- LSP client names to ignore.
           -- Example: {"null-ls", "lua_ls"}

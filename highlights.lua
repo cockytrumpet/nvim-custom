@@ -13,7 +13,6 @@ M.override = {
 
 ---@type HLTable
 M.add = {
-  NvimTreeOpenedFolderName = { fg = "green", bold = true },
   FoldColumn = {
     fg = "grey",
     bg = "black",
@@ -38,6 +37,9 @@ M.add = {
   NeogitDiffDelete = {
     fg = "#B13B5C",
     bg = "#3d1212",
+  },
+  NvimTreeOpenedFile = {
+    fg = "orange",
   },
 }
 

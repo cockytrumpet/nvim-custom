@@ -58,7 +58,39 @@ for _, lsp in ipairs(servers) do
     capabilities = capabilities,
   }
 end
-
+--[[
+lspconfig.lua_ls.setup {
+  on_attach = custom_on_attach,
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      runtime = {
+        version = "LuaJIT",
+      },
+      diagnostics = {
+        globals = { "use", "vim" },
+      },
+      hint = {
+        enable = true,
+        setType = true,
+      },
+      telemetry = {
+        enable = false,
+      },
+      workspace = {
+        library = {
+          [vim.fn.expand "$VIMRUNTIME/lua"] = true,
+          [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
+          [vim.fn.stdpath "data" .. "/lazy/ui/nvchad_types"] = true,
+          [vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy"] = true,
+        },
+        maxPreload = 100000,
+        preloadFileSize = 10000,
+      },
+    },
+  },
+}
+]]
 lspconfig.ocamllsp.setup {
   on_attach = on_attach,
   capabilities = capabilities,
@@ -169,5 +201,5 @@ vim.diagnostic.config {
   severity_sort = true,
 }
 
-vim.lsp.handlers["textDocument/hover"] = require("noice").hover
-vim.lsp.handlers["textDocument/signatureHelp"] = require("noice").signature
+--[[ vim.lsp.handlers["textDocument/hover"] = require("noice").hover
+vim.lsp.handlers["textDocument/signatureHelp"] = require("noice").signature ]]

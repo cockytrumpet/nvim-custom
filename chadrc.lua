@@ -61,7 +61,7 @@ M.settings = {
   },
 }
 ]]
-M.lazy_nvim = require "configs.lazy_nvim" -- config for lazy.nvim startup options
+M.lazy_nvim = require "custom.configs.lazy_nvim" -- config for lazy.nvim startup options
 M.plugins = "custom.plugins"
 M.mappings = require "custom.mappings"
 return M
