@@ -26,6 +26,13 @@ M.general = {
   },
 
   n = {
+    ["<leader>gm"] = {
+      function()
+        require "custom.configs.games"
+        GamesMenu()
+      end,
+      "Games Menu",
+    },
     ["<leader>ca"] = { "<CMD>CodeActionMenu<CR>", "Code Action menu" },
     ["<Left>"] = { "<CMD>vertical resize -1<CR>", "Vertical +" },
     ["<Right>"] = { "<CMD>vertical resize +1<CR>", "Vertical -" },
