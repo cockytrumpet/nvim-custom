@@ -44,6 +44,7 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = {
     "neotest-summary",
     "Neogit*",
+    "terminal",
   },
   callback = function()
     require("ufo").detach()
@@ -241,6 +242,7 @@ autocmd({ "BufEnter", "BufNew" }, {
       "dapui_breakpoints",
       "dapui_scopes",
       "themes",
+      "terminal",
     }
 
     if vim.tbl_contains(ft_ignore, vim.bo.filetype) then
@@ -251,7 +253,7 @@ autocmd({ "BufEnter", "BufNew" }, {
 })
 
 autocmd("FileType", {
-  pattern = { "gitcommit", "markdown", "text", "log" },
+  pattern = { "gitcommit", "markdown", "text", "log", "help" },
   callback = function()
     vim.opt_local.wrap = true
     vim.opt_local.spell = true
@@ -341,8 +343,8 @@ autocmd("FileType", {
 --     end
 --   end,
 -- })
--- start git messages in insert mode
 
+-- start git messages in insert mode
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "gitcommit", "gitrebase" },
   command = "startinsert | 1",
@@ -352,6 +354,19 @@ autocmd("TermOpen", {
   callback = function()
     vim.opt_local.relativenumber = false
     vim.opt_local.number = false
+    vim.opt_local.signcolumn = "no"
+    vim.opt_local.cursorline = false
+    vim.opt_local.cursorcolumn = false
+    vim.opt_local.scrolloff = 0
+    vim.opt_local.sidescrolloff = 0
+    vim.opt_local.foldenable = false
+    vim.opt_local.foldcolumn = "0"
+    vim.opt_local.list = false
+    vim.opt_local.colorcolumn = ""
+    vim.opt_local.spell = false
+    vim.opt_local.spelllang = "en_us"
+    vim.opt_local.conceallevel = 0
+    vim.opt_local.concealcursor = ""
     vim.cmd "startinsert!"
   end,
   group = general,

@@ -2,7 +2,7 @@ local builtin = require "statuscol.builtin"
 require("statuscol").setup {
   relculright = true,
   bt_ignore = {
-    -- "nofile",
+    "nofile",
     "prompt",
     "terminal",
     "lazy",
@@ -23,6 +23,7 @@ require("statuscol").setup {
     "noice",
     "lazy",
     "neotest-summary",
+    "terminal",
   },
   segments = {
     {
