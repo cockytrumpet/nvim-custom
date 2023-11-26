@@ -3,6 +3,7 @@ local M = {}
 M.disabled = {
   n = {
     ["<C-n>"] = "",
+    ["<leader>ma"] = "",
   },
 }
 
@@ -13,6 +14,7 @@ M.general = {
   },
 
   v = {
+    ["<leader>m"] = { "<CMD> MCstart <CR>", "MultiCursor mode" },
     ["<leader>fm"] = {
       function()
         require("conform").format {
@@ -33,6 +35,8 @@ M.general = {
       end,
       "Games Menu",
     },
+    ["<leader>m"] = { "<CMD> MCstart <CR>", "MultiCursor mode" },
+    ["<leader>fM"] = { "<cmd> Telescope marks <CR>", "telescope bookmarks" },
     ["<leader>ca"] = { "<CMD>CodeActionMenu<CR>", "Code Action menu" },
     ["<Left>"] = { "<CMD>vertical resize -1<CR>", "Vertical +" },
     ["<Right>"] = { "<CMD>vertical resize +1<CR>", "Vertical -" },

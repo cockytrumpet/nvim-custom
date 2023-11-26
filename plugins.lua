@@ -224,6 +224,7 @@ local plugins = {
       -- your config
     },
   },
+  --[[
   {
     "max397574/better-escape.nvim",
     event = "InsertEnter",
@@ -231,6 +232,7 @@ local plugins = {
       require("better_escape").setup()
     end,
   },
+   ]]
   {
     "christoomey/vim-tmux-navigator",
     lazy = false,
@@ -399,6 +401,7 @@ local plugins = {
   },
   {
     "smoka7/multicursors.nvim",
+    event = "VeryLazy",
     cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
     opts = {
       updatetime = 10,

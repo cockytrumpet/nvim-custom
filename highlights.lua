@@ -38,6 +38,14 @@ M.add = {
     fg = "#B13B5C",
     bg = "#3d1212",
   },
+  NeogitDiffAddHighlight = {
+    fg = "green",
+    bg = "#1e4620",
+  },
+  NeogitDiffAdd = {
+    fg = "#3FB950",
+    bg = "#1e4620",
+  },
   NvimTreeOpenedFile = {
     fg = "orange",
   },
