@@ -116,17 +116,19 @@ lspconfig.pyright.setup {
   settings = {
     python = {
       analysis = {
-        typeCheckingMode = "basic",
+        typeCheckingMode = "off",
         autoSearchPaths = true,
         useLibraryCodeForTypes = true,
-        diagnosticMode = "openFilesOnly",
+        -- diagnosticMode = "openFilesOnly",
       },
       pyright = {
         autoImportCompletion = true,
       },
+      -- venvPath = "/Users/adam/.pyenv/versions",
+      -- venv = "ml-3.10.13",
     },
   },
-  single_file = true,
+  -- single_file = true,
 }
 
 lspconfig.ruff_lsp.setup {
@@ -134,7 +136,7 @@ lspconfig.ruff_lsp.setup {
   -- alternative, this can be enabled to make `organize imports`
   -- available as code action
   settings = {
-    organizeImports = false,
+    organizeImports = true,
   },
   -- disable ruff as hover provider to avoid conflicts with pyright
   on_attach = function(client)

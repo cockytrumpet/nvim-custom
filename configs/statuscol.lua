@@ -6,6 +6,7 @@ require("statuscol").setup {
     "prompt",
     "terminal",
     "lazy",
+    "OUTLINE",
   },
   ft_ignore = {
     "NvimTree",
@@ -24,6 +25,7 @@ require("statuscol").setup {
     "lazy",
     "neotest-summary",
     "terminal",
+    "Outline",
   },
   segments = {
     {

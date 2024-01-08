@@ -92,10 +92,10 @@ local plugins = {
           html = { "prettier" },
           json = { "prettier" },
           yaml = { "prettier" },
-          markdown = { "prettier", "injected" },
+          markdown = { "prettier" },
           graphql = { "prettier" },
           lua = { "stylua" },
-          python = { "isort", "black" },
+          python = { "black" }, -- isort removed so code actions work with ruff
           cpp = { "clang-format" },
           c = { "clang-format" },
           ocaml = { "ocamlformat" },
@@ -320,7 +320,7 @@ local plugins = {
     cmd = "SymbolsOutline",
     config = true,
   },
-  {
+  --[[ {
     "dreamsofcode-io/ChatGPT.nvim",
     event = "VeryLazy",
     dependencies = {
@@ -331,6 +331,18 @@ local plugins = {
     config = function()
       require("chatgpt").setup {}
     end,
+  }, ]]
+  {
+    "jackMort/ChatGPT.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("chatgpt").setup()
+    end,
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
   },
   {
     "olimorris/persisted.nvim",
@@ -343,7 +355,7 @@ local plugins = {
       should_autosave = nil, -- function to determine if a session should be autosaved
       autoload = true, -- automatically load the session for the cwd on Neovim startup
       on_autoload_no_session = nil,
-      follow_cwd = true,
+      follow_cwd = false,
       -- ignored_dirs = {
       --   "~/.config",
       --   "~/.local/nvim",
@@ -988,6 +1000,29 @@ local plugins = {
       require "custom.configs.ufo"
       require("core.utils").load_mappings "ufo"
     end,
+  },
+  {
+    "David-Kunz/gen.nvim",
+    cmd = "Gen",
+    opts = {
+      model = "deepseek-coder:6.7b", -- The default model to use.
+      display_mode = "split", -- The display mode. Can be "float" or "split".
+      show_prompt = false, -- Shows the Prompt submitted to Ollama.
+      show_model = false, -- Displays which model you are using at the beginning of your chat session.
+      no_auto_close = false, -- Never closes the window automatically.
+      ---@diagnostic disable-next-line: unused-local
+      init = function(options)
+        pcall(io.popen, "ollama serve > /dev/null 2>&1 &")
+      end,
+      -- Function to initialize Ollama
+      command = "curl --silent --no-buffer -X POST http://localhost:11434/api/generate -d $body",
+      -- The command for the Ollama service. You can use placeholders $prompt, $model and $body (shellescaped).
+      -- This can also be a lua function returning a command string, with options as the input parameter.
+      -- The executed command must return a JSON object with { response, context }
+      -- (context property is optional).
+      list_models = "<omitted lua function>", -- Retrieves a list of model names
+      debug = false, -- Prints errors and the command which is run.
+    },
   },
 }
 

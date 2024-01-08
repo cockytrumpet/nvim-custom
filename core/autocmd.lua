@@ -12,7 +12,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
   pattern = "PersistedSavePre",
   group = persisted_group,
   callback = function()
-    local filetypes_to_close = { "minimap", "NvimTree*", "Trouble", "OUTLINE" }
+    local filetypes_to_close = { "minimap", "NvimTree*", "Trouble", "Outline" }
     for _, filetype in ipairs(filetypes_to_close) do
       local cmd = "bw " .. filetype
       pcall(vim.cmd, cmd)
@@ -226,6 +226,7 @@ autocmd("BufReadPost", {
 autocmd({ "BufEnter", "BufNew" }, {
   callback = function(ev)
     local ft_ignore = {
+      "Outline",
       "man",
       "help",
       "neo-tree",
@@ -319,6 +320,8 @@ autocmd("FileType", {
     "neotest-summary",
     "neotest-output-panel",
     "fugitive",
+    "Outline",
+
     -- "Neogit*",
   },
   command = [[
